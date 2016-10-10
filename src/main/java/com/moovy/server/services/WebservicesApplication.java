@@ -16,12 +16,12 @@ public class WebservicesApplication extends Application
     /**
      *
      */
-    protected Set<Object> singletons = new HashSet<Object>();
+    protected Set<Object> singletons = new HashSet<>();
 
     /**
      *
      */
-    protected Set<Class<?>> empty = new HashSet<Class<?>>();
+    protected Set<Class<?>> empty = new HashSet<>();
 
     /**
      * Initializes a new webservices application.
