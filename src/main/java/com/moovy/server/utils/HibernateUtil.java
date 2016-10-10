@@ -1,4 +1,4 @@
-package com.polytech.project.server.utils;
+package com.moovy.server.utils;
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)

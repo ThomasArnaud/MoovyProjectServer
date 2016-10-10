@@ -1,4 +1,4 @@
-package com.polytech.project.server.services;
+package com.moovy.server.services;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
