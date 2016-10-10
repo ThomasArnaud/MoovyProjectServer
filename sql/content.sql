@@ -24,6 +24,17 @@ INSERT INTO category VALUES
 ('WE', 'Western');
 
 --
+-- Contenu de la table 'director'
+--
+
+INSERT INTO director VALUES
+(1, 'Oury', 'Gérard'),
+(2, 'Chabrol', 'Claude'),
+(3, 'Besson', 'Luc'),
+(4, 'Besnard', 'Eric'),
+(5, 'Whedon', 'Joss');
+
+--
 -- Contenu de la table 'film'
 --
 
@@ -61,14 +72,3 @@ INSERT INTO film_category VALUES
 (3, 'AC'),
 (4, 'PO'),
 (5, 'AC');
-
---
--- Contenu de la table 'director'
---
-
-INSERT INTO director VALUES
-(1, 'Oury', 'Gérard'),
-(2, 'Chabrol', 'Claude'),
-(3, 'Besson', 'Luc'),
-(4, 'Besnard', 'Eric'),
-(5, 'Whedon', 'Joss');
