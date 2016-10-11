@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS actor (
   id int(4) NOT NULL AUTO_INCREMENT,
-  name varchar(20) NOT NULL,
+  last_name varchar(20) NOT NULL,
   first_name varchar(20) DEFAULT NULL,
   birth_date date DEFAULT NULL,
   death_date date DEFAULT NULL,
@@ -63,9 +63,22 @@ CREATE TABLE IF NOT EXISTS film_category (
 
 CREATE TABLE IF NOT EXISTS director (
   id int(2) NOT NULL AUTO_INCREMENT,
-  name varchar(20) NOT NULL,
+  last_name varchar(20) NOT NULL,
   first_name varchar(20) NOT NULL,
   PRIMARY KEY (id)
+);
+
+--
+-- Stucture de la table utilisateur
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  id int(2) NOT NULL AUTO_INCREMENT,
+  first_name varchar(20) NOT NULL,
+  last_name varchar(20) NOT NULL,
+  email varchar(40) NOT NULL,
+  created_at date NOT NULL,
+  PRIMARY KEY(id)
 );
 
 --
@@ -80,7 +93,7 @@ ALTER TABLE film
 ALTER TABLE `character`
   ADD CONSTRAINT character_ibfk_1 FOREIGN KEY (id_film) REFERENCES film (id),
   ADD CONSTRAINT character_ibfk_2 FOREIGN KEY (id_actor) REFERENCES actor (id);
-  
+
 --
 -- Contraintes pour la table 'film_category'
 --

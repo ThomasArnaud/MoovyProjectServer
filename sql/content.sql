@@ -72,3 +72,9 @@ INSERT INTO film_category VALUES
 (3, 'AC'),
 (4, 'PO'),
 (5, 'AC');
+
+INSERT INTO `user` VALUES
+(1, 'Bruno', 'Buiret', 'bruno.buiret@etu.univ-lyon1.fr', NOW()),
+(2, 'Thomas', 'Arnaud', 'thomas.arnaud@etu.univ-lyon1.fr', NOW()),
+(3, 'Alexis', 'Rabilloud', 'alexis.rabilloud@univ-lyon1.fr', NOW()),
+(4, 'Christian', 'Vial', 'christian.vial@univ-lyon1.fr', NOW());
