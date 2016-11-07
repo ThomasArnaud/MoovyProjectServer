@@ -12,5 +12,11 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
+        <mapping resource="com/moovy/server/model/Actor.hbm.xml" />
+        <mapping resource="com/moovy/server/model/Category.hbm.xml" />
+        <mapping resource="com/moovy/server/model/Character.hbm.xml" />
+        <mapping resource="com/moovy/server/model/Director.hbm.xml" />
+        <mapping resource="com/moovy/server/model/Movie.hbm.xml" />
+        <mapping resource="com/moovy/server/model/MovieCategory.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
