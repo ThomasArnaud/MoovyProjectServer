@@ -22,10 +22,10 @@ CREATE TABLE IF NOT EXISTS category (
 );
 
 --
--- Structure de la table 'film'
+-- Structure de la table 'movie'
 --
 
-CREATE TABLE IF NOT EXISTS film (
+CREATE TABLE IF NOT EXISTS movie (
   id int(4) NOT NULL AUTO_INCREMENT,
   title varchar(30) NOT NULL,
   duration int(3) NOT NULL,
@@ -41,20 +41,20 @@ CREATE TABLE IF NOT EXISTS film (
 --
 
 CREATE TABLE IF NOT EXISTS `character` (
-  id_film int(4) NOT NULL,
+  id_movie int(4) NOT NULL,
   id_actor int(4) NOT NULL,
   name varchar(30) NOT NULL,
-  PRIMARY KEY (id_film, id_actor)
+  PRIMARY KEY (id_movie, id_actor)
 );
 
 --
--- Structure de la table 'film_category'
+-- Structure de la table 'movie_category'
 --
 
-CREATE TABLE IF NOT EXISTS film_category (
-  id_film int(2) NOT NULL,
+CREATE TABLE IF NOT EXISTS movie_category (
+  id_movie int(2) NOT NULL,
   code_category varchar(2) NOT NULL,
-  PRIMARY KEY (id_film, code_category)
+  PRIMARY KEY (id_movie, code_category)
 );
 
 --
@@ -82,22 +82,22 @@ CREATE TABLE IF NOT EXISTS `user` (
 );
 
 --
--- Contraintes pour la table 'film'
+-- Contraintes pour la table 'movie'
 --
-ALTER TABLE film
-  ADD CONSTRAINT film_ibfk_1 FOREIGN KEY (id_director) REFERENCES director (id);
+ALTER TABLE movie
+  ADD CONSTRAINT movie_ibfk_1 FOREIGN KEY (id_director) REFERENCES director (id);
 
 --
 -- Contraintes pour la table 'character'
 --
 ALTER TABLE `character`
-  ADD CONSTRAINT character_ibfk_1 FOREIGN KEY (id_film) REFERENCES film (id),
+  ADD CONSTRAINT character_ibfk_1 FOREIGN KEY (id_movie) REFERENCES movie (id),
   ADD CONSTRAINT character_ibfk_2 FOREIGN KEY (id_actor) REFERENCES actor (id);
 
 --
--- Contraintes pour la table 'film_category'
+-- Contraintes pour la table 'movie_category'
 --
-ALTER TABLE film_category
-  ADD CONSTRAINT film_category_ibfk_1 FOREIGN KEY (id_film) REFERENCES film (id),
-  ADD CONSTRAINT film_category_ibfk_2 FOREIGN KEY (code_category) REFERENCES category (code);
+ALTER TABLE movie_category
+  ADD CONSTRAINT movie_category_ibfk_1 FOREIGN KEY (id_movie) REFERENCES movie (id),
+  ADD CONSTRAINT movie_category_ibfk_2 FOREIGN KEY (code_category) REFERENCES category (code);
   
