@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.moovy.server.model.Movie" table="movie" schema="movie">
+        <id name="id" column="id"/>
+        <property name="title" column="title"/>
+        <property name="duration" column="duration"/>
+        <property name="releaseDate" column="release_date"/>
+        <property name="budget" column="budget"/>
+        <property name="benefit" column="benefit"/>
+    </class>
+</hibernate-mapping>

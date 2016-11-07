@@ -4,19 +4,34 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/moovy?useEncoding=true&amp;characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/movie</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.username">userepul</property>
-        <property name="hibernate.connection.password">epul</property>
         <property name="hibernate.connection.characterEncoding">utf8</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
-        <mapping resource="com/moovy/server/model/Actor.hbm.xml" />
+        <mapping resource="test/Actor.hbm.xml" />
         <mapping resource="com/moovy/server/model/Category.hbm.xml" />
         <mapping resource="com/moovy/server/model/Character.hbm.xml" />
-        <mapping resource="com/moovy/server/model/Director.hbm.xml" />
+        <mapping resource="test/Director.hbm.xml" />
         <mapping resource="com/moovy/server/model/Movie.hbm.xml" />
         <mapping resource="com/moovy/server/model/MovieCategory.hbm.xml" />
+        <mapping class="com.ActorEntity"/>
+        <mapping class="com.CategoryEntity"/>
+        <mapping class="com.CharacterEntity"/>
+        <mapping class="com.DirectorEntity"/>
+        <mapping class="com.MovieEntity"/>
+        <mapping class="com.MovieCategoryEntity"/>
+        <mapping class="com.UserEntity"/>
+        <mapping resource="com/Actor.hbm.xml"/>
+        <mapping resource="com/Category.hbm.xml"/>
+        <mapping resource="com/Character.hbm.xml"/>
+        <mapping resource="com/Director.hbm.xml"/>
+        <mapping resource="com/Movie.hbm.xml"/>
+        <mapping resource="com/MovieCategory.hbm.xml"/>
+        <mapping resource="com/User.hbm.xml"/>
+        <mapping resource="com/moovy/server/model/Actor.hbm.xml"/>
+        <mapping resource="com/moovy/server/model/Director.hbm.xml"/>
+        <mapping resource="com/moovy/server/model/User.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

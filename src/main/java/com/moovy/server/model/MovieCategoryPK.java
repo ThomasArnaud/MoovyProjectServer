@@ -1,32 +1,13 @@
 package com.moovy.server.model;
 
-/**
- * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
- * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
- * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
- */
-public class MovieCategory {
+import java.io.Serializable;
 
-    protected Movie movie;
-    protected Category category;
+/**
+ * Created by thomas on 07/11/2016.
+ */
+public class MovieCategoryPK implements Serializable {
     private int idMovie;
     private String codeCategory;
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public int getIdMovie() {
         return idMovie;
@@ -49,7 +30,7 @@ public class MovieCategory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MovieCategory that = (MovieCategory) o;
+        MovieCategoryPK that = (MovieCategoryPK) o;
 
         if (idMovie != that.idMovie) return false;
         if (codeCategory != null ? !codeCategory.equals(that.codeCategory) : that.codeCategory != null) return false;
