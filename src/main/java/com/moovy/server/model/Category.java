@@ -1,7 +1,9 @@
 package com.moovy.server.model;
 
 /**
- * Created by thomas on 07/11/2016.
+ * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
+ * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
+ * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
 public class Category {
 
