@@ -29,6 +29,7 @@ public class WebservicesApplication extends Application
     public WebservicesApplication()
     {
         // Define the available webservices
+        this.singletons.add(new ExampleWebservice());
     }
 
     /**
