@@ -30,6 +30,10 @@ public class WebservicesApplication extends Application
     {
         // Define the available webservices
         this.singletons.add(new ExampleWebservice());
+
+        this.singletons.add(new MoviesWebservice());
+
+        this.singletons.add(new CategoriesWebservice());
     }
 
     /**
