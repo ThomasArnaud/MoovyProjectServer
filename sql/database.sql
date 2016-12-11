@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   last_name varchar(20) NOT NULL,
   email varchar(40) NOT NULL,
   created_at date NOT NULL,
+  password varchar(25) NOT NULL,
   PRIMARY KEY(id)
 );
 

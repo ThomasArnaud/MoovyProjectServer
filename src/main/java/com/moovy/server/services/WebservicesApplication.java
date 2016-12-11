@@ -34,6 +34,8 @@ public class WebservicesApplication extends Application
         this.singletons.add(new MoviesWebservice());
 
         this.singletons.add(new CategoriesWebservice());
+
+        this.singletons.add(new ActorsWebservice());
     }
 
     /**

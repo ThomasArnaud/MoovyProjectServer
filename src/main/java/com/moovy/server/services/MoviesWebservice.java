@@ -1,6 +1,11 @@
 package com.moovy.server.services;
 
+import com.moovy.server.model.Movie;
+import com.moovy.server.repository.MovieRepository;
+
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
@@ -10,16 +15,22 @@ import javax.ws.rs.*;
 @Path("/movies")
 public class MoviesWebservice
 {
+    private MovieRepository repository;
+
+
+    public MoviesWebservice() {
+        this.repository = new MovieRepository();
+    }
+
     /**
      *
      * @return
      */
     @GET
     @Path("/")
-    @Produces("application/json")
-    public String moviesList()
-    {
-        return "Test";
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Movie> moviesList() {
+        return repository.fetchAll();
     }
 
     /**
@@ -28,8 +39,10 @@ public class MoviesWebservice
      */
     @GET
     @Path("/{id}")
-    @Produces("application/json")
-    public String movie(@PathParam("id") int id) { return "OneMovies"; }
+    @Produces(MediaType.APPLICATION_JSON)
+    public Movie movie(@PathParam("id") int id) {
+        return repository.fetch(id);
+    }
 
     /**
      *
@@ -38,8 +51,10 @@ public class MoviesWebservice
      */
     @GET
     @Path("?query={string}")
-    @Produces("application/json")
-    public String searchMovie(@PathParam("string") String query) {return "search results";}
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Movie> searchMovie(@PathParam("string") String query) {
+        return repository.lookup(query);
+    }
 
     /**
      *
@@ -47,8 +62,10 @@ public class MoviesWebservice
      */
     @PUT
     @Path("/{id}")
-    @Consumes("application/json")
-    public void updateMovie(@PathParam("id") int id) { }
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateMovie(Movie movie) {
+        repository.update(movie);
+    }
 
     /**
      *
@@ -56,8 +73,10 @@ public class MoviesWebservice
      */
     @POST
     @Path("/")
-    @Consumes("application/json")
-    public void addMovie() { }
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addMovie(Movie movie) {
+        repository.save(movie);
+    }
 
     /**
      *
@@ -65,6 +84,7 @@ public class MoviesWebservice
      */
     @DELETE
     @Path("/{id}")
-    @Consumes("application/json")
-    public void deleteMovie(@PathParam("id") int id) {}
+    public void deleteMovie(@PathParam("id") int id) {
+        repository.delete(id);
+    }
 }

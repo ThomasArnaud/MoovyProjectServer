@@ -38,7 +38,7 @@ INSERT INTO director VALUES
 -- Contenu de la table 'film'
 --
 
-INSERT INTO film VALUES
+INSERT INTO movie VALUES
 (1, 'Léon', 110, '1994-04-14', 17531000, 69250000, 3),
 (2, 'Cash', 100, '2008-04-23', 18340000, 60340000, 4),
 (3, 'La grande vadrouille', 132, '1966-12-01', 7227000, 51258000, 2),
@@ -66,7 +66,7 @@ INSERT INTO `character` VALUES
 -- Contenu de la table 'film_category'
 --
 
-INSERT INTO film_category VALUES
+INSERT INTO movie_category VALUES
 (1, 'PO'),
 (2, 'PO'),
 (3, 'AC'),
@@ -74,7 +74,7 @@ INSERT INTO film_category VALUES
 (5, 'AC');
 
 INSERT INTO `user` VALUES
-(1, 'Bruno', 'Buiret', 'bruno.buiret@etu.univ-lyon1.fr', NOW()),
-(2, 'Thomas', 'Arnaud', 'thomas.arnaud@etu.univ-lyon1.fr', NOW()),
-(3, 'Alexis', 'Rabilloud', 'alexis.rabilloud@univ-lyon1.fr', NOW()),
-(4, 'Christian', 'Vial', 'christian.vial@univ-lyon1.fr', NOW());
+(1, 'Bruno', 'Buiret', 'bruno.buiret@etu.univ-lyon1.fr', NOW(), 'admin'),
+(2, 'Thomas', 'Arnaud', 'thomas.arnaud@etu.univ-lyon1.fr', NOW(), 'admin'),
+(3, 'Alexis', 'Rabilloud', 'alexis.rabilloud@univ-lyon1.fr', NOW(), 'admin'),
+(4, 'Christian', 'Vial', 'christian.vial@univ-lyon1.fr', NOW(), 'admin');

@@ -1,6 +1,12 @@
 package com.moovy.server.services;
 
+import com.moovy.server.model.Category;
+import com.moovy.server.repository.CategoryRepository;
+
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
@@ -11,14 +17,22 @@ import javax.ws.rs.*;
 @Path("/categories")
 public class CategoriesWebservice {
 
+    private CategoryRepository repository;
+
+    public CategoriesWebservice() {
+        this.repository = new CategoryRepository();
+    }
+
     /**
      *
      * @return
      */
     @GET
     @Path("/")
-    @Produces("application/json")
-    public String categoriesList() { return "Test"; }
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Category> categoriesList() {
+        return repository.fetchAll();
+    }
 
     /**
      *
@@ -27,8 +41,10 @@ public class CategoriesWebservice {
      */
     @GET
     @Path("/{id}")
-    @Produces("application/json")
-    public String getCategory(@PathParam("id") int id) { return "OneCaregory"; }
+    @Produces(MediaType.APPLICATION_JSON)
+    public Category getCategory(@PathParam("id") int id) {
+        return repository.fetch(id);
+    }
 
     /**
      *
@@ -37,18 +53,22 @@ public class CategoriesWebservice {
      */
     @GET
     @Path("?query={string}")
-    @Produces("application/json")
-    public String searchCategory(@PathParam("string") String query) { return "test"; }
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchCategory(@PathParam("string") String query) {
+        return "test";
+    }
 
 
     /**
      *
-     * @param id
+     * @param category
      */
     @PUT
     @Path("/{id}")
-    @Consumes("application/json")
-    public void updateCategory(@PathParam("id") int id) {}
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateCategory(Category category) {
+        repository.update(category);
+    }
 
 
     /**
@@ -56,9 +76,10 @@ public class CategoriesWebservice {
      */
     @POST
     @Path("/")
-    @Consumes("application/json")
-    public void addCategory() {}
-
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addCategory(Category category) {
+        repository.save(category);
+    }
 
     /**
      *
@@ -66,8 +87,10 @@ public class CategoriesWebservice {
      */
     @DELETE
     @Path("/{id}")
-    @Consumes("application/json")
-    public void deleteCtaegory(@PathParam("id") int id) {}
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void deleteCategory(@PathParam("id") int id) {
+        repository.delete(id);
+    }
 
 
 
