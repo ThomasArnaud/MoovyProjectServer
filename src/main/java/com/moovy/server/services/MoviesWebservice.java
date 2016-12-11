@@ -64,7 +64,7 @@ public class MoviesWebservice
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateMovie(Movie movie) {
-        repository.update(movie);
+        repository.saveOrUpdate(movie);
     }
 
     /**
@@ -75,7 +75,7 @@ public class MoviesWebservice
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addMovie(Movie movie) {
-        repository.save(movie);
+        repository.saveOrUpdate(movie);
     }
 
     /**

@@ -67,7 +67,7 @@ public class CategoriesWebservice {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateCategory(Category category) {
-        repository.update(category);
+        repository.saveOrUpdate(category);
     }
 
 
@@ -78,7 +78,7 @@ public class CategoriesWebservice {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addCategory(Category category) {
-        repository.save(category);
+        repository.saveOrUpdate(category);
     }
 
     /**

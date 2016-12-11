@@ -42,19 +42,10 @@ public abstract class AbstractRepository<Entity> {
         return entity;
     }
 
-    public void save(Entity entity) {
+    public void saveOrUpdate(Entity entity) {
         Session session = HibernateUtil.openSession();
 
-        session.save(entity);
-        session.getTransaction().commit();
-
-        session.close();
-    }
-
-    public void update(Entity entity) {
-        Session session = HibernateUtil.openSession();
-
-        session.update(entity);
+        session.saveOrUpdate(entity);
         session.getTransaction().commit();
 
         session.close();
