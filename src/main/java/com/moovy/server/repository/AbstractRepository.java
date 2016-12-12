@@ -17,7 +17,7 @@ public abstract class AbstractRepository<Entity>
     /**
      * The repository's entity's type.
      */
-    private final Class<Entity> entityClass;
+    protected final Class<Entity> entityClass;
 
     /**
      * Creates a new repository for a specific entity type.
@@ -39,7 +39,14 @@ public abstract class AbstractRepository<Entity>
     public Entity fetch(int id)
     throws HibernateException
     {
-        return HibernateUtil.getSession().get(this.entityClass, id);
+        try
+        {
+            return HibernateUtil.getSession().get(this.entityClass, id);
+        }
+        catch(HibernateException ex)
+        {
+            throw new RepositoryException(ex);
+        }
     }
 
     /**
@@ -72,7 +79,7 @@ public abstract class AbstractRepository<Entity>
                 transaction.rollback();
             }
 
-            throw ex;
+            throw new RepositoryException(ex);
         }
     }
 
@@ -103,7 +110,7 @@ public abstract class AbstractRepository<Entity>
                 transaction.rollback();
             }
 
-            throw ex;
+            throw new RepositoryException(ex);
         }
     }
 
@@ -134,7 +141,7 @@ public abstract class AbstractRepository<Entity>
                 transaction.rollback();
             }
 
-            throw ex;
+            throw new RepositoryException(ex);
         }
     }
 }

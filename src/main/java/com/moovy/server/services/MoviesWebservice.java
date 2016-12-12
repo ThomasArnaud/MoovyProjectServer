@@ -11,8 +11,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
@@ -22,80 +26,143 @@ import java.util.List;
 @Path("/movies")
 public class MoviesWebservice
 {
-    private MovieRepository repository;
-
-    public MoviesWebservice()
-    {
-        this.repository = new MovieRepository();
-    }
-
     /**
      *
-     * @return
+     */
+    @Context
+    UriInfo uriInfo;
+
+    /**
+     * Produces a list of movies that can be filtered through a "query" parameter.
+     *
+     * @return The list of movies.
      */
     @GET
-    // @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> moviesList()
+    public Response getList(@QueryParam("query") String query)
     {
-        return repository.fetchAll();
+        // Initialize vars
+        MovieRepository repository = new MovieRepository();
+
+        if(query != null && !query.trim().isEmpty())
+        {
+            return Response
+                .ok(repository.lookup(query))
+                .build()
+            ;
+        }
+        else
+        {
+            return Response
+                .ok(repository.fetchAll())
+                .build()
+            ;
+        }
     }
 
     /**
+     * Produces a single movie.
      *
-     * @return
+     * @return The movie.
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Movie movie(@PathParam("id") int id)
+    public Response getOne(@PathParam("id") int id)
     {
-        return repository.fetch(id);
+        Movie movie = new MovieRepository().fetch(id);
+
+        if(movie != null)
+        {
+            return Response
+                .ok(movie)
+                .build()
+            ;
+        }
+        else
+        {
+            return Response
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
+        }
     }
 
     /**
+     * Adds a new movie to the database.
      *
-     * @param query
-     * @return
+     * @return A success or failure response.
      */
-    @GET
-    @Path("?query={string}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> searchMovie(@PathParam("string") String query)
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response add(Movie movie)
     {
-        return repository.lookup(query);
+        // Save the new movie
+        new MovieRepository().save(movie);
+
+        // Build response
+        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
+        uriBuilder.path("/movies/" + movie.getId());
+
+        return Response
+            .created(uriBuilder.build())
+            .build()
+        ;
     }
 
     /**
+     * Updates a movie from the database.
      *
-     *
+     * @return A success or failure response.
      */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateMovie(Movie movie) {
-        repository.save(movie);
+    public Response update(Movie movie)
+    {
+        // Update the movie
+        new MovieRepository().save(movie);
+
+        // Build response
+        return Response
+            .ok()
+            .build()
+        ;
     }
 
     /**
+     * Deletes a movie from the database.
      *
-     *
-     */
-    @POST
-    // @Path("/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void addMovie(Movie movie) {
-        repository.save(movie);
-    }
-
-    /**
-     *
-     * @param id
+     * @param id The movie's id.
+     * @return A success or failure response.
      */
     @DELETE
     @Path("/{id}")
-    public void deleteMovie(@PathParam("id") int id)
+    public Response delete(@PathParam("id") int id)
     {
-        //repository.delete(id);
+        // Initialize vars
+        MovieRepository repository = new MovieRepository();
+
+        // Does the movie exist?
+        Movie movie = repository.fetch(id);
+
+        if(movie != null)
+        {
+            // Delete the movie
+            repository.delete(movie);
+
+            // Build response
+            return Response
+                .noContent()
+                .build()
+            ;
+        }
+        else
+        {
+            return Response
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
+        }
     }
 }

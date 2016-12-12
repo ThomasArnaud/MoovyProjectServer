@@ -2,9 +2,11 @@ package com.moovy.server.repository;
 
 import com.moovy.server.model.Movie;
 import com.moovy.server.utils.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
-import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -12,7 +14,6 @@ import java.util.List;
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
-
 public class MovieRepository extends AbstractRepository<Movie>
 {
     public MovieRepository()
@@ -21,41 +22,38 @@ public class MovieRepository extends AbstractRepository<Movie>
     }
 
     /**
+     * Fetches every entity of a specific type from the database.
      *
-     * @param id
-     */
-    /*
-    public void delete(int id)
-    {
-        Session session = HibernateUtil.getSession();
-        session.beginTransaction();
-        String query = "FROM Movie m WHERE m.id=" + id;
-        List result = session.createQuery(query).list();
-        if (result.size() == 1) {
-            result.remove(0);
-        }
-        else {
-            System.err.println("Couldn't delete movie element of id " + id);
-        }
-        session.close();
-    }
-    */
-
-    /**
-     *
-     * @param s
-     * @return
+     * @return A list of the entities.
+     * @throws HibernateException If an Hibernate error happens.
      */
     public List<Movie> lookup(String s)
+    throws HibernateException
     {
+        // Initialize vars
         Session session = HibernateUtil.getSession();
+        Transaction transaction = null;
+        List<Movie> entities = null;
 
-        session.beginTransaction();
-        Query query = session.createQuery("SELECT m FROM Movie m WHERE m.title LIKE ?1");
-        query.setParameter(1, "%" + s + "%");
+        // Fetch the entities
+        try
+        {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("SELECT m FROM Movie m WHERE m.title LIKE ?1", Movie.class);
+            query.setParameter(1, "%" + s + "%");
+            entities = (List<Movie>) query.list();
+            transaction.commit();
 
-        List<Movie> results = (List<Movie>) query.getResultList();
+            return entities;
+        }
+        catch(HibernateException ex)
+        {
+            if(transaction != null)
+            {
+                transaction.rollback();
+            }
 
-        return results;
+            throw new RepositoryException(ex);
+        }
     }
 }
