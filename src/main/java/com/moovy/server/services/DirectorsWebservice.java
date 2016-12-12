@@ -1,7 +1,8 @@
 package com.moovy.server.services;
 
-import com.moovy.server.model.Actor;
-import com.moovy.server.repository.ActorRepository;
+import com.moovy.server.model.Director;
+import com.moovy.server.repository.DirectorRepository;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -10,8 +11,8 @@ import javax.ws.rs.core.*;
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
-@Path("/actors")
-public class ActorsWebservice
+@Path("/directors")
+public class DirectorsWebservice
 {
     /**
      *
@@ -20,21 +21,21 @@ public class ActorsWebservice
     UriInfo uriInfo;
 
     /**
-     * Produces a single actor.
+     * Produces a single director.
      *
-     * @return The actor.
+     * @return The director.
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam("id") int id)
     {
-        Actor actor = new ActorRepository().fetch(id);
+        Director director = new DirectorRepository().fetch(id);
 
-        if(actor != null)
+        if(director != null)
         {
             return Response
-                    .ok(actor)
+                    .ok(director)
                     .build()
                     ;
         }
@@ -48,16 +49,16 @@ public class ActorsWebservice
     }
 
     /**
-     * Produces a list of actors that can be filtered through a "query" parameter.
+     * Produces a list of directors that can be filtered through a "query" parameter.
      *
-     * @return The list of actors.
+     * @return The list of directors.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList(@QueryParam("query") String query)
     {
         // Initialize vars
-        ActorRepository repository = new ActorRepository();
+        DirectorRepository repository = new DirectorRepository();
 
         if(query != null && !query.trim().isEmpty())
         {
@@ -76,20 +77,20 @@ public class ActorsWebservice
     }
 
     /**
-     * Adds a new actor to the database.
+     * Adds a new director to the database.
      *
      * @return A success or failure response.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(Actor actor)
+    public Response add(Director director)
     {
         // Save the new actor
-        new ActorRepository().save(actor);
+        new DirectorRepository().save(director);
 
         // Build response
         UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path("/actors/" + actor.getId());
+        uriBuilder.path("/directors/" + director.getId());
 
         return Response
                 .created(uriBuilder.build())
@@ -98,19 +99,19 @@ public class ActorsWebservice
     }
 
     /**
-     * Updates an actor from the database.
+     * Updates a director from the database.
      *
      * @return A success or failure response.
      */
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Actor actor)
+    public Response update(Director director)
     {
-        if(new ActorRepository().fetch(actor.getId()) != null)
+        if(new DirectorRepository().fetch(director.getId()) != null)
         {
             // Update the actor
-            new ActorRepository().save(actor);
+            new DirectorRepository().save(director);
 
             // Build response
             return Response
@@ -126,9 +127,9 @@ public class ActorsWebservice
     }
 
     /**
-     * Deletes an actor from the database.
+     * Deletes a director from the database.
      *
-     * @param id The actor's id.
+     * @param id The director's id.
      * @return A success or failure response.
      */
     @DELETE
@@ -136,15 +137,15 @@ public class ActorsWebservice
     public Response delete(@PathParam("id") int id)
     {
         // Initialize vars
-        ActorRepository repository = new ActorRepository();
+        DirectorRepository repository = new DirectorRepository();
 
         // Does the actor exist?
-        Actor actor = repository.fetch(id);
+        Director director = repository.fetch(id);
 
-        if(actor != null)
+        if(director != null)
         {
             // Delete the actor
-            repository.delete(actor);
+            repository.delete(director);
 
             // Build response
             return Response

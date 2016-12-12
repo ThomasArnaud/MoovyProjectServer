@@ -1,6 +1,6 @@
 package com.moovy.server.repository;
 
-import com.moovy.server.model.Actor;
+import com.moovy.server.model.Director;
 import com.moovy.server.utils.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,11 +13,11 @@ import java.util.List;
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
-public class ActorRepository extends AbstractRepository<Actor>
+public class DirectorRepository extends AbstractRepository<Director>
 {
-    public ActorRepository()
+    public DirectorRepository()
     {
-        super(Actor.class);
+        super(Director.class);
     }
 
     /**
@@ -26,21 +26,21 @@ public class ActorRepository extends AbstractRepository<Actor>
      * @return A list of the entities.
      * @throws HibernateException If an Hibernate error happens.
      */
-    public List<Actor> lookup(String s)
+    public List<Director> lookup(String s)
             throws HibernateException
     {
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
-        List<Actor> entities = null;
+        List<Director> entities = null;
 
         // Fetch the entities
         try
         {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT a FROM Actor a WHERE a.lastName LIKE ?1", Actor.class);
+            Query query = session.createQuery("SELECT d FROM Director d WHERE d.lastName LIKE ?1", Director.class);
             query.setParameter(1, "%" + s + "%");
-            entities = (List<Actor>) query.list();
+            entities = (List<Director>) query.list();
             transaction.commit();
 
             return entities;
