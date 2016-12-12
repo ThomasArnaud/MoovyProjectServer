@@ -1,36 +1,45 @@
 package com.moovy.server.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.sql.Date;
 import java.util.List;
 
 /**
+ * Movie class generated from the database.
+ *
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
+@Entity
 public class Movie
 {
-    protected int id;
-
-    protected String title;
-
-    protected int duration;
-
-    protected Date releaseDate;
-    protected int budget;
-    protected int profit;
-    protected Director director;
-    protected List<Character> characters;
-    protected List<Category> categories;
+    private int id;
+    private String title;
+    private int duration;
+    private Date releaseDate;
+    private int budget;
     private int benefit;
+    private List<Character> characters;
+    private Director director;
+    private List<Category> categories;
 
-    public void setReleaseDate(java.sql.Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
+    @Id
+    @Column(name = "id", nullable = false)
     public int getId()
     {
-        return this.id;
+        return id;
     }
 
     public void setId(int id)
@@ -38,9 +47,11 @@ public class Movie
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "title", nullable = false, length = 30)
     public String getTitle()
     {
-        return this.title;
+        return title;
     }
 
     public void setTitle(String title)
@@ -48,9 +59,11 @@ public class Movie
         this.title = title;
     }
 
+    @Basic
+    @Column(name = "duration", nullable = false)
     public int getDuration()
     {
-        return this.duration;
+        return duration;
     }
 
     public void setDuration(int duration)
@@ -58,9 +71,11 @@ public class Movie
         this.duration = duration;
     }
 
+    @Basic
+    @Column(name = "release_date", nullable = false)
     public Date getReleaseDate()
     {
-        return this.releaseDate;
+        return releaseDate;
     }
 
     public void setReleaseDate(Date releaseDate)
@@ -68,9 +83,11 @@ public class Movie
         this.releaseDate = releaseDate;
     }
 
+    @Basic
+    @Column(name = "budget", nullable = false)
     public int getBudget()
     {
-        return this.budget;
+        return budget;
     }
 
     public void setBudget(int budget)
@@ -78,71 +95,63 @@ public class Movie
         this.budget = budget;
     }
 
-    public int getProfit()
+    @Basic
+    @Column(name = "benefit", nullable = false)
+    public int getBenefit()
     {
-        return this.profit;
-    }
-
-    public void setProfit(int profit)
-    {
-        this.profit = profit;
-    }
-
-    public Director getDirector()
-    {
-        return this.director;
-    }
-
-    public void setDirector(Director director)
-    {
-        this.director = director;
-    }
-
-    public List<Character> getCharacters()
-    {
-        return this.characters;
-    }
-
-    public void setCharacters(List<Character> characters)
-    {
-        this.characters = characters;
-    }
-
-    public List<Category> getCategories() {
-        return this.categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    public int getBenefit() {
         return benefit;
     }
 
-    public void setBenefit(int benefit) {
+    public void setBenefit(int benefit)
+    {
         this.benefit = benefit;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
 
         Movie movie = (Movie) o;
 
-        if (id != movie.id) return false;
-        if (duration != movie.duration) return false;
-        if (budget != movie.budget) return false;
-        if (benefit != movie.benefit) return false;
-        if (title != null ? !title.equals(movie.title) : movie.title != null) return false;
-        if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null) return false;
+        if (id != movie.id)
+        {
+            return false;
+        }
+        if (duration != movie.duration)
+        {
+            return false;
+        }
+        if (budget != movie.budget)
+        {
+            return false;
+        }
+        if (benefit != movie.benefit)
+        {
+            return false;
+        }
+        if (title != null ? !title.equals(movie.title) : movie.title != null)
+        {
+            return false;
+        }
+        if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null)
+        {
+            return false;
+        }
 
         return true;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int result = id;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + duration;
@@ -150,5 +159,49 @@ public class Movie
         result = 31 * result + budget;
         result = 31 * result + benefit;
         return result;
+    }
+
+    @OneToMany(mappedBy = "id.movie")
+    @JsonManagedReference
+    public List<Character> getCharacters()
+    {
+        return characters;
+    }
+
+    public void setCharacters(List<Character> characters)
+    {
+        this.characters = characters;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "id_director", referencedColumnName = "id", nullable = false)
+    @JsonManagedReference
+    public Director getDirector()
+    {
+        return director;
+    }
+
+    public void setDirector(Director director)
+    {
+        this.director = director;
+    }
+
+    @ManyToMany
+    @JoinTable(
+        name = "movie_category",
+        catalog = "movie",
+        schema = "movie",
+        joinColumns = @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false),
+        inverseJoinColumns = @JoinColumn(name = "code_category", referencedColumnName = "code", nullable = false)
+    )
+    @JsonManagedReference
+    public List<Category> getCategories()
+    {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories)
+    {
+        this.categories = categories;
     }
 }
