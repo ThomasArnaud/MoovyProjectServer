@@ -1,7 +1,6 @@
 package com.moovy.server.repository;
 
 import com.moovy.server.model.Movie;
-import com.moovy.server.services.AbstractRepository;
 import com.moovy.server.utils.HibernateUtil;
 import org.hibernate.Session;
 
@@ -14,10 +13,10 @@ import java.util.List;
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
 
-public class MovieRepository extends AbstractRepository<Movie> {
-
-
-    public MovieRepository() {
+public class MovieRepository extends AbstractRepository<Movie>
+{
+    public MovieRepository()
+    {
         super(Movie.class);
     }
 
@@ -25,8 +24,10 @@ public class MovieRepository extends AbstractRepository<Movie> {
      *
      * @param id
      */
-    public void delete(int id) {
-        Session session = HibernateUtil.openSession();
+    /*
+    public void delete(int id)
+    {
+        Session session = HibernateUtil.getSession();
         session.beginTransaction();
         String query = "FROM Movie m WHERE m.id=" + id;
         List result = session.createQuery(query).list();
@@ -38,18 +39,20 @@ public class MovieRepository extends AbstractRepository<Movie> {
         }
         session.close();
     }
+    */
 
     /**
      *
      * @param s
      * @return
      */
-    public List<Movie> lookup(String s) {
-        Session session = HibernateUtil.openSession();
+    public List<Movie> lookup(String s)
+    {
+        Session session = HibernateUtil.getSession();
 
         session.beginTransaction();
         Query query = session.createQuery("SELECT m FROM Movie m WHERE m.title LIKE ?1");
-        query.setParameter(1, "%"+s+"%");
+        query.setParameter(1, "%" + s + "%");
 
         List<Movie> results = (List<Movie>) query.getResultList();
 

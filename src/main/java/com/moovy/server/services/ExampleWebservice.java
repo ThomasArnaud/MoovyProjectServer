@@ -18,7 +18,7 @@ public class ExampleWebservice
      * @return An empty JSON array.
      */
     @GET
-    @Path("/")
+    // @Path("/")
     @Produces("application/json")
     public String examplesList()
     {

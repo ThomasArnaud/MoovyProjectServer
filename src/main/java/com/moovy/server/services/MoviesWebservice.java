@@ -3,7 +3,14 @@ package com.moovy.server.services;
 import com.moovy.server.model.Movie;
 import com.moovy.server.repository.MovieRepository;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -17,8 +24,8 @@ public class MoviesWebservice
 {
     private MovieRepository repository;
 
-
-    public MoviesWebservice() {
+    public MoviesWebservice()
+    {
         this.repository = new MovieRepository();
     }
 
@@ -27,9 +34,10 @@ public class MoviesWebservice
      * @return
      */
     @GET
-    @Path("/")
+    // @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> moviesList() {
+    public List<Movie> moviesList()
+    {
         return repository.fetchAll();
     }
 
@@ -40,7 +48,8 @@ public class MoviesWebservice
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Movie movie(@PathParam("id") int id) {
+    public Movie movie(@PathParam("id") int id)
+    {
         return repository.fetch(id);
     }
 
@@ -52,7 +61,8 @@ public class MoviesWebservice
     @GET
     @Path("?query={string}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> searchMovie(@PathParam("string") String query) {
+    public List<Movie> searchMovie(@PathParam("string") String query)
+    {
         return repository.lookup(query);
     }
 
@@ -64,7 +74,7 @@ public class MoviesWebservice
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateMovie(Movie movie) {
-        repository.saveOrUpdate(movie);
+        repository.save(movie);
     }
 
     /**
@@ -72,10 +82,10 @@ public class MoviesWebservice
      *
      */
     @POST
-    @Path("/")
+    // @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addMovie(Movie movie) {
-        repository.saveOrUpdate(movie);
+        repository.save(movie);
     }
 
     /**
@@ -84,7 +94,8 @@ public class MoviesWebservice
      */
     @DELETE
     @Path("/{id}")
-    public void deleteMovie(@PathParam("id") int id) {
-        repository.delete(id);
+    public void deleteMovie(@PathParam("id") int id)
+    {
+        //repository.delete(id);
     }
 }

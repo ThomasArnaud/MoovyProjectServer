@@ -16,33 +16,36 @@ public class HibernateUtil
     /**
      * The Hibernate session factory.
      */
-    protected static SessionFactory factory = null;
+    protected static Session session = null;
+
+    static
+    {
+        StandardServiceRegistry registry =
+            new StandardServiceRegistryBuilder()
+                .configure()
+                .build()
+            ;
+
+        try
+        {
+            SessionFactory factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+            HibernateUtil.session = factory.openSession();
+        }
+        catch(Exception e)
+        {
+            StandardServiceRegistryBuilder.destroy(registry);
+
+            throw e;
+        }
+    }
 
     /**
      * Opens a new Hibernate session.
      *
      * @return A Hibernate session.
      */
-    public static Session openSession()
+    public static Session getSession()
     {
-        if(HibernateUtil.factory == null)
-        {
-            StandardServiceRegistry registry =
-                new StandardServiceRegistryBuilder()
-                .configure()
-                .build()
-            ;
-
-            try
-            {
-                HibernateUtil.factory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            }
-            catch(Exception e)
-            {
-                StandardServiceRegistryBuilder.destroy(registry);
-            }
-        }
-
-        return HibernateUtil.factory.openSession();
+        return HibernateUtil.session;
     }
 }
