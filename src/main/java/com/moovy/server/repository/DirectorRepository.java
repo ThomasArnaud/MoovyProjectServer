@@ -38,7 +38,7 @@ public class DirectorRepository extends AbstractRepository<Director>
         try
         {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT d FROM Director d WHERE d.lastName LIKE ?1", Director.class);
+            Query query = session.createQuery("SELECT d FROM Director d WHERE d.firstName LIKE ?1 OR d.lastName LIKE ?1", Director.class);
             query.setParameter(1, "%" + s + "%");
             entities = (List<Director>) query.list();
             transaction.commit();

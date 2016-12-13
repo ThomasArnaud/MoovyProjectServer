@@ -38,7 +38,7 @@ public class ActorRepository extends AbstractRepository<Actor>
         try
         {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT a FROM Actor a WHERE a.lastName LIKE ?1", Actor.class);
+            Query query = session.createQuery("SELECT a FROM Actor a WHERE a.firstName LIKE ?1 OR a.lastName LIKE ?1", Actor.class);
             query.setParameter(1, "%" + s + "%");
             entities = (List<Actor>) query.list();
             transaction.commit();
