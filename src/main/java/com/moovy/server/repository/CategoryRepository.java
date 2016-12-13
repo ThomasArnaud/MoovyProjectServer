@@ -1,6 +1,13 @@
 package com.moovy.server.repository;
 
 import com.moovy.server.model.Category;
+import com.moovy.server.utils.HibernateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import java.util.List;
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
@@ -14,21 +21,33 @@ public class CategoryRepository extends AbstractRepository<Category>
         super(Category.class);
     }
 
-    /*
-    public void delete(int id)
+    public List<Category> lookup(String s)
+            throws HibernateException
     {
+        // Initialize vars
         Session session = HibernateUtil.getSession();
-        session.beginTransaction();
-        String query = "FROM Category c WHERE c.id=" +id;
+        Transaction transaction = null;
+        List<Category> entities = null;
 
-        List result = session.createQuery(query).list();
+        // Fetch the entities
+        try
+        {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("SELECT c FROM Category c WHERE c.title LIKE ?1", Category.class);
+            query.setParameter(1, "%" + s + "%");
+            entities = (List<Category>) query.list();
+            transaction.commit();
 
-        if (result.size() == 1) {
-            result.remove(0);
+            return entities;
         }
-        else {
-            System.err.println("Couldn't delete category element of id " +id);
+        catch(HibernateException ex)
+        {
+            if(transaction != null)
+            {
+                transaction.rollback();
+            }
+
+            throw new RepositoryException(ex);
         }
     }
-    */
 }

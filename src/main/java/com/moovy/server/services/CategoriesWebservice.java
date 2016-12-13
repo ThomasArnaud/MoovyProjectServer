@@ -2,16 +2,10 @@ package com.moovy.server.services;
 
 import com.moovy.server.model.Category;
 import com.moovy.server.repository.CategoryRepository;
+import com.moovy.server.repository.MovieRepository;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import java.util.List;
 
 
@@ -24,23 +18,35 @@ import java.util.List;
 @Path("/categories")
 public class CategoriesWebservice
 {
-    private CategoryRepository repository;
 
-    public CategoriesWebservice()
-    {
-        this.repository = new CategoryRepository();
-    }
+    @Context
+    UriInfo uriInfo;
 
     /**
      *
      * @return
      */
     @GET
-    // @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Category> categoriesList()
-    {
-        return repository.fetchAll();
+    public Response getList(@QueryParam("query") String query) {
+
+        // Initialize vars
+        CategoryRepository repository = new CategoryRepository();
+
+        if(query != null && !query.trim().isEmpty())
+        {
+            return Response
+                    .ok(repository.lookup(query))
+                    .build()
+                    ;
+        }
+        else
+        {
+            return Response
+                    .ok(repository.fetchAll())
+                    .build()
+                    ;
+        }
     }
 
     /**
@@ -51,24 +57,40 @@ public class CategoriesWebservice
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Category getCategory(@PathParam("id") int id)
-    {
-        return repository.fetch(id);
+    public Response getCategory(@PathParam("id") int id) {
+        Category category = new CategoryRepository().fetch(id);
+
+        if (category != null) {
+            return Response
+                    .ok(category)
+                    .build()
+            ;
+        }
+        else {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build()
+            ;
+        }
     }
 
     /**
      *
-     * @param query
-     * @return
      */
-    @GET
-    @Path("?query={string}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String searchCategory(@PathParam("string") String query)
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response add(Category category)
     {
-        return "test";
-    }
+        new CategoryRepository().save(category);
 
+        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
+        uriBuilder.path("/categories/" + category.getCode());
+
+        return Response
+                .created(uriBuilder.build())
+                .build()
+        ;
+    }
 
     /**
      *
@@ -77,22 +99,19 @@ public class CategoriesWebservice
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateCategory(Category category)
+    public Response updateCategory(Category category)
     {
-        repository.save(category);
+
+        new CategoryRepository().save(category);
+
+        return Response
+                .ok()
+                .build()
+        ;
     }
 
 
-    /**
-     *
-     */
-    @POST
-    // @Path("/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void addCategory(Category category)
-    {
-        repository.save(category);
-    }
+
 
     /**
      *
@@ -101,9 +120,28 @@ public class CategoriesWebservice
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteCategory(@PathParam("id") int id)
+    public Response deleteCategory(@PathParam("id") int id)
     {
-        // repository.delete(id);
+
+        CategoryRepository repository = new CategoryRepository();
+
+        Category category = repository.fetch(id);
+
+        if(category != null) {
+
+            repository.delete(category);
+
+            return Response
+                    .noContent()
+                    .build()
+            ;
+        }
+        else {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build()
+            ;
+        }
     }
 
 
