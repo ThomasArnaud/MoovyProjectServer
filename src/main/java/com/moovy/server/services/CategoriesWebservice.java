@@ -19,12 +19,16 @@ import java.util.List;
 public class CategoriesWebservice
 {
 
+    /**
+     *
+     */
     @Context
     UriInfo uriInfo;
 
     /**
+     * Produces a list of categories that can be filtered through a "query" parameter.
      *
-     * @return
+     * @return The list of categories.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,15 +54,15 @@ public class CategoriesWebservice
     }
 
     /**
+     * Produces a single category, reffered using the code of the category.
      *
-     * @param id
-     * @return
+     * @return The movie.
      */
     @GET
-    @Path("/{id}")
+    @Path("/{code}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCategory(@PathParam("id") int id) {
-        Category category = new CategoryRepository().fetch(id);
+    public Response getCategory(@PathParam("code") String code) {
+        Category category = new CategoryRepository().fetch(code);
 
         if (category != null) {
             return Response
@@ -75,7 +79,9 @@ public class CategoriesWebservice
     }
 
     /**
+     * Adds a new category to the database.
      *
+     * @return A success or failure response.
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -93,11 +99,12 @@ public class CategoriesWebservice
     }
 
     /**
+     * Updates a category from the database.
      *
-     * @param category
+     * @return A success or failure response.
      */
     @PUT
-    @Path("/{id}")
+    @Path("/{code}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateCategory(Category category)
     {
@@ -114,18 +121,20 @@ public class CategoriesWebservice
 
 
     /**
+     * Deletes a category from the database.
      *
-     * @param id
+     * @param code The category's code.
+     * @return A success or failure response.
      */
     @DELETE
-    @Path("/{id}")
+    @Path("/{code}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteCategory(@PathParam("id") int id)
+    public Response deleteCategory(@PathParam("code") String code)
     {
 
         CategoryRepository repository = new CategoryRepository();
 
-        Category category = repository.fetch(id);
+        Category category = repository.fetch(code);
 
         if(category != null) {
 

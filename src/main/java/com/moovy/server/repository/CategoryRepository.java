@@ -21,6 +21,12 @@ public class CategoryRepository extends AbstractRepository<Category>
         super(Category.class);
     }
 
+    /**
+     * Fetches every entity of a specific type from the database.
+     *
+     * @return A list of the entities.
+     * @throws HibernateException If an Hibernate error happens.
+     */
     public List<Category> lookup(String s)
             throws HibernateException
     {

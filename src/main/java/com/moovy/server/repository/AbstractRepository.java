@@ -50,6 +50,26 @@ public abstract class AbstractRepository<Entity>
     }
 
     /**
+     * Fetches a single entity from the database, where the entity's primary key is not an ID.
+     *
+     * @param code The entity's code.
+     * @return The wanted entity or {@code null} otherwise.
+     * @throws HibernateException If an Hibernate error happens.
+     */
+    public Entity fetch(String code)
+            throws HibernateException
+    {
+        try
+        {
+            return HibernateUtil.getSession().get(this.entityClass, code);
+        }
+        catch(HibernateException ex)
+        {
+            throw new RepositoryException(ex);
+        }
+    }
+
+    /**
      * Fetches every entity of a specific type from the database.
      *
      * @return A list of the entities.
