@@ -120,14 +120,27 @@ public class MoviesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Movie movie)
     {
-        // Update the movie
-        new MovieRepository().save(movie);
+        // Initialize vars
+        MovieRepository repository = new MovieRepository();
 
-        // Build response
-        return Response
-            .ok()
-            .build()
-        ;
+        if(repository.fetch(movie.getId()) != null)
+        {
+            // Update the movie
+            repository.save(movie);
+
+            // Build response
+            return Response
+                .ok()
+                .build()
+            ;
+        }
+        else
+        {
+            return Response
+                .status(Response.Status.BAD_REQUEST)
+                .build()
+            ;
+        }
     }
 
     /**

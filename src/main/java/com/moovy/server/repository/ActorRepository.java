@@ -27,7 +27,7 @@ public class ActorRepository extends AbstractRepository<Actor>
      * @throws HibernateException If an Hibernate error happens.
      */
     public List<Actor> lookup(String s)
-            throws HibernateException
+    throws HibernateException
     {
         // Initialize vars
         Session session = HibernateUtil.getSession();

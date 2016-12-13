@@ -3,8 +3,20 @@ package com.moovy.server.services;
 import com.moovy.server.model.Director;
 import com.moovy.server.repository.DirectorRepository;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
@@ -35,16 +47,16 @@ public class DirectorsWebservice
         if(director != null)
         {
             return Response
-                    .ok(director)
-                    .build()
-                    ;
+                .ok(director)
+                .build()
+            ;
         }
         else
         {
             return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-                    ;
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
         }
     }
 
@@ -63,16 +75,16 @@ public class DirectorsWebservice
         if(query != null && !query.trim().isEmpty())
         {
             return Response
-                    .ok(repository.lookup(query))
-                    .build()
-                    ;
+                .ok(repository.lookup(query))
+                .build()
+            ;
         }
         else
         {
             return Response
-                    .ok(repository.fetchAll())
-                    .build()
-                    ;
+                .ok(repository.fetchAll())
+                .build()
+            ;
         }
     }
 
@@ -85,7 +97,7 @@ public class DirectorsWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Director director)
     {
-        // Save the new actor
+        // Save the new director
         new DirectorRepository().save(director);
 
         // Build response
@@ -93,9 +105,9 @@ public class DirectorsWebservice
         uriBuilder.path("/directors/" + director.getId());
 
         return Response
-                .created(uriBuilder.build())
-                .build()
-                ;
+            .created(uriBuilder.build())
+            .build()
+        ;
     }
 
     /**
@@ -108,21 +120,26 @@ public class DirectorsWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Director director)
     {
-        if(new DirectorRepository().fetch(director.getId()) != null)
+        // Initialize vars
+        DirectorRepository repository = new DirectorRepository();
+
+        if(repository.fetch(director.getId()) != null)
         {
-            // Update the actor
-            new DirectorRepository().save(director);
+            // Update the director
+            repository.save(director);
 
             // Build response
             return Response
-                    .ok()
-                    .build()
-                    ;
-        } else {
+                .ok()
+                .build()
+            ;
+        }
+        else
+        {
             return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-                    ;
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
         }
     }
 
@@ -139,26 +156,26 @@ public class DirectorsWebservice
         // Initialize vars
         DirectorRepository repository = new DirectorRepository();
 
-        // Does the actor exist?
+        // Does the director exist?
         Director director = repository.fetch(id);
 
         if(director != null)
         {
-            // Delete the actor
+            // Delete the director
             repository.delete(director);
 
             // Build response
             return Response
-                    .noContent()
-                    .build()
-                    ;
+                .noContent()
+                .build()
+            ;
         }
         else
         {
             return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-                    ;
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
         }
     }
 

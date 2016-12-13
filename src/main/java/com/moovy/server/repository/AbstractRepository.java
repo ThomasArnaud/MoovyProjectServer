@@ -57,7 +57,7 @@ public abstract class AbstractRepository<Entity>
      * @throws HibernateException If an Hibernate error happens.
      */
     public Entity fetch(String code)
-            throws HibernateException
+    throws HibernateException
     {
         try
         {

@@ -28,7 +28,7 @@ public class CategoryRepository extends AbstractRepository<Category>
      * @throws HibernateException If an Hibernate error happens.
      */
     public List<Category> lookup(String s)
-            throws HibernateException
+    throws HibernateException
     {
         // Initialize vars
         Session session = HibernateUtil.getSession();
@@ -39,7 +39,7 @@ public class CategoryRepository extends AbstractRepository<Category>
         try
         {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT c FROM Category c WHERE c.title LIKE ?1", Category.class);
+            Query query = session.createQuery("SELECT c FROM Category c WHERE c.name LIKE ?1", Category.class);
             query.setParameter(1, "%" + s + "%");
             entities = (List<Category>) query.list();
             transaction.commit();

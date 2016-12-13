@@ -34,16 +34,16 @@ public class ActorsWebservice
         if(actor != null)
         {
             return Response
-                    .ok(actor)
-                    .build()
-                    ;
+                .ok(actor)
+                .build()
+            ;
         }
         else
         {
             return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-                    ;
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
         }
     }
 
@@ -62,16 +62,16 @@ public class ActorsWebservice
         if(query != null && !query.trim().isEmpty())
         {
             return Response
-                    .ok(repository.lookup(query))
-                    .build()
-                    ;
+                .ok(repository.lookup(query))
+                .build()
+            ;
         }
         else
         {
             return Response
-                    .ok(repository.fetchAll())
-                    .build()
-                    ;
+                .ok(repository.fetchAll())
+                .build()
+            ;
         }
     }
 
@@ -92,9 +92,9 @@ public class ActorsWebservice
         uriBuilder.path("/actors/" + actor.getId());
 
         return Response
-                .created(uriBuilder.build())
-                .build()
-                ;
+            .created(uriBuilder.build())
+            .build()
+        ;
     }
 
     /**
@@ -107,21 +107,26 @@ public class ActorsWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Actor actor)
     {
-        if(new ActorRepository().fetch(actor.getId()) != null)
+        // Initialize vars
+        ActorRepository repository = new ActorRepository();
+
+        if(repository.fetch(actor.getId()) != null)
         {
             // Update the actor
-            new ActorRepository().save(actor);
+            repository.save(actor);
 
             // Build response
             return Response
-                    .ok()
-                    .build()
-                    ;
-        } else {
+                .ok()
+                .build()
+            ;
+        }
+        else
+            {
             return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-                    ;
+                .status(Response.Status.BAD_REQUEST)
+                .build()
+            ;
         }
     }
 
@@ -148,16 +153,16 @@ public class ActorsWebservice
 
             // Build response
             return Response
-                    .noContent()
-                    .build()
-                    ;
+                .noContent()
+                .build()
+            ;
         }
         else
         {
             return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-                    ;
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
         }
     }
 

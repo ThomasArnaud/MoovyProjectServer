@@ -27,7 +27,7 @@ public class DirectorRepository extends AbstractRepository<Director>
      * @throws HibernateException If an Hibernate error happens.
      */
     public List<Director> lookup(String s)
-            throws HibernateException
+    throws HibernateException
     {
         // Initialize vars
         Session session = HibernateUtil.getSession();
