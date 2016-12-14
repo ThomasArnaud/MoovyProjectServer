@@ -51,7 +51,7 @@ public class StatisticsWebservice
             {
                 transaction = session.beginTransaction();
                 map.remove(s);
-                map.put(s,((Long)(session.createQuery("SELECT count(*) FROM " + s).iterate().next())));
+                map.put(s,((session.createQuery("SELECT count(*) FROM " + s, Long.class).iterate().next())));
                 transaction.commit();
             }
             return Response
