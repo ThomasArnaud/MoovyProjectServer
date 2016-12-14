@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.ws.WebServiceException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,11 +39,11 @@ public class StatisticsWebservice
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
 
-        Map<String, Integer> map = null;
-        map.put("Users", Integer.MIN_VALUE);
-        map.put("Movies", Integer.MIN_VALUE);
-        map.put("Actors", Integer.MIN_VALUE);
-        map.put("Directors", Integer.MIN_VALUE);
+        Map<String, Long> map = new HashMap<>();
+        map.put("Users", Long.MIN_VALUE);
+        map.put("Movies", Long.MIN_VALUE);
+        map.put("Actors", Long.MIN_VALUE);
+        map.put("Directors", Long.MIN_VALUE);
 
         try
         {
@@ -50,7 +51,7 @@ public class StatisticsWebservice
             {
                 transaction = session.beginTransaction();
                 map.remove(s);
-                map.put(s,((Integer) session.createQuery("SELECT count(*) FROM " + s).iterate().next()).intValue());
+                map.put(s,((Long)(session.createQuery("SELECT count(*) FROM " + s).iterate().next())));
                 transaction.commit();
             }
             return Response
