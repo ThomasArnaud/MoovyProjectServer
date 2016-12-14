@@ -44,8 +44,10 @@ public class StatisticsWebservice
         map.put("Actors", Integer.MIN_VALUE);
         map.put("Directors", Integer.MIN_VALUE);
 
-        try {
-            for(String s : map.keySet()) {
+        try
+        {
+            for(String s : map.keySet())
+            {
                 transaction = session.beginTransaction();
                 map.remove(s);
                 map.put(s,((Integer) session.createQuery("SELECT count(*) FROM " + s).iterate().next()).intValue());
