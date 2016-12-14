@@ -35,6 +35,7 @@ public class WebservicesApplication extends Application
         this.singletons.add(new ActorsWebservice());
         this.singletons.add(new DirectorsWebservice());
         this.singletons.add(new StatisticsWebservice());
+        this.singletons.add(new UsersWebservice());
     }
 
     /**
