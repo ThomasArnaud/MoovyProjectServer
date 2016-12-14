@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class MovieRepository extends AbstractRepository<Movie>
 {
+    /**
+     * Creates a new repository for movies.
+     */
     public MovieRepository()
     {
         super(Movie.class);

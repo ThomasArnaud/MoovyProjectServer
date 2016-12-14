@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class ActorRepository extends AbstractRepository<Actor>
 {
+    /**
+     * Creates a new repository for actors.
+     */
     public ActorRepository()
     {
         super(Actor.class);

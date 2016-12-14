@@ -15,81 +15,85 @@ import java.util.Map;
  */
 
 @Path("/users")
-public class UsersWebservice {
-
+public class UsersWebservice
+{
     @Context
     UriInfo uriInfo;
 
-    /*
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOne(@PathParam("id") int id) {
-        User user = new UserRepository().fetch(id);
-
-        if (user != null)
-        {
-            return Response
-                    .ok(user)
-                    .build()
-            ;
-        }
-        else
-        {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build()
-            ;
-        }
-    }
-    */
-
+    /**
+     *
+     * @param loginData The user's credentials.
+     * @return The user if the credentials are correct, an error otherwise.
+     */
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response loginUser(Map<String, String> logins) {
+    public Response loginUser(Map<String, String> loginData)
+    {
+        // Initialize vars
         UserRepository repository = new UserRepository();
 
-        User user =  repository.fetchMail(logins.get("email"));
-
-        if (user == null)
+        // Does the user exist?
+        if(!loginData.containsKey("email"))
         {
             return Response
-                    .status(Response.Status.UNAUTHORIZED)
-                    .build()
+                .status(Response.Status.BAD_REQUEST)
+                .build()
             ;
         }
 
-        String password = logins.get("password");
+        User user =  repository.fetchByEmail(loginData.get("email"));
 
-        if (user.getPassword().equals(HashUtil.sha256("moovy" + password))) {
+        if(user == null)
+        {
             return Response
-                    .ok()
-                    .build()
+                .status(Response.Status.UNAUTHORIZED)
+                .build()
+            ;
+        }
+
+        // Is the password valid?
+        if(!loginData.containsKey("password"))
+        {
+            return Response
+                .status(Response.Status.BAD_REQUEST)
+                .build()
+            ;
+        }
+
+        if(user.getPassword().equals(HashUtil.sha256("Moovy" + loginData.get("password"))))
+        {
+            return Response
+                .ok(user)
+                .build()
             ;
         }
 
         return Response
-                .status(Response.Status.UNAUTHORIZED)
-                .build()
+            .status(Response.Status.UNAUTHORIZED)
+            .build()
         ;
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response registerUser(User user) {
+    public Response registerUser(User user)
+    {
+        // Hash password
+        user.setPassword(HashUtil.sha256("Moovy" + user.getPassword()));
 
-        UserRepository repository = new UserRepository();
-
-        user.setPassword("moovy"+user.getPassword());
-
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path("/users" + user.getId());
+        // Then, save user
+        new UserRepository().save(user);
 
         return Response
-                .created(uriBuilder.build())
-                .build()
+            .ok()
+            .build()
         ;
     }
 

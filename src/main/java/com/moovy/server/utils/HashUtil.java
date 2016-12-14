@@ -9,16 +9,20 @@ import java.security.NoSuchAlgorithmException;
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
-
-public class HashUtil
+public abstract class HashUtil
 {
-    public static String sha256(String password) {
+    /**
+     * Hashes a string using SHA-256.
+     *
+     * @param input The input string.
+     * @return The hashed string.
+     */
+    public static String sha256(String input)
+    {
         try
         {
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-
-            byte[] rawSecurityDigest = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
-
+            byte[] rawSecurityDigest = sha256.digest(input.getBytes(StandardCharsets.UTF_8));
             StringBuilder digestBuilder = new StringBuilder();
 
             for(byte b : rawSecurityDigest)
@@ -28,9 +32,10 @@ public class HashUtil
 
             return digestBuilder.toString();
         }
-        catch (NoSuchAlgorithmException e)
+        catch(NoSuchAlgorithmException e)
         {
             e.printStackTrace();
+
             return null;
         }
     }

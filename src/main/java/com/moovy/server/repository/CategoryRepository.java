@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class CategoryRepository extends AbstractRepository<Category>
 {
+    /**
+     * Creates a new repository for categories.
+     */
     public CategoryRepository()
     {
         super(Category.class);

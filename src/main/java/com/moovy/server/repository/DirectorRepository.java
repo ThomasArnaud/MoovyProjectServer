@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class DirectorRepository extends AbstractRepository<Director>
 {
+    /**
+     * Creates a new repository for directors.
+     */
     public DirectorRepository()
     {
         super(Director.class);

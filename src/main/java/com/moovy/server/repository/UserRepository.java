@@ -14,22 +14,33 @@ import java.util.List;
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
-
 public class UserRepository extends AbstractRepository<User>
 {
+    /**
+     * Creates a new repository for users.
+     */
+    public UserRepository()
+    {
+        super(User.class);
+    }
 
-    public UserRepository() { super(User.class); }
-
-    public User fetchMail(String email) {
-
+    /**
+     *
+     * @param email
+     * @return
+     */
+    public User fetchByEmail(String email)
+    {
+        // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
         List<User> user;
 
+        // Fetch the user
         try
         {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT u FROM User u WHERE u.email=?1", User.class);
+            Query query = session.createQuery("SELECT u FROM User u WHERE u.email = ?1", User.class);
             query.setParameter(1, "%" + email + "%");
             user = query.list();
 
@@ -42,8 +53,8 @@ public class UserRepository extends AbstractRepository<User>
                 else
                 {
                     System.out.println("Duplicate mail found");
-
                 }
+
                 return null;
             }
             else
