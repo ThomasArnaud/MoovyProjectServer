@@ -1,6 +1,6 @@
 package com.moovy.server.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -100,7 +100,7 @@ public class Director
     }
 
     @OneToMany(mappedBy = "director")
-    @JsonBackReference
+    @JsonIgnore
     public List<Movie> getDirectedMovies()
     {
         return directedMovies;

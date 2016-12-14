@@ -81,7 +81,7 @@ public class UsersWebservice
      * @return
      */
     @POST
-    @Path("/login")
+    @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(User user)
     {

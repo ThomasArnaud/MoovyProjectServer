@@ -1,6 +1,6 @@
 package com.moovy.server.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -82,7 +82,7 @@ public class Category
     }
 
     @ManyToMany(mappedBy = "categories")
-    @JsonBackReference
+    @JsonIgnore
     public List<Movie> getMovies()
     {
         return movies;

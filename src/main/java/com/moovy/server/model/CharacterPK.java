@@ -1,8 +1,5 @@
 package com.moovy.server.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -62,7 +59,6 @@ public class CharacterPK implements Serializable
 
     @ManyToOne
     @JoinColumn(name = "id_actor", referencedColumnName = "id", nullable = false)
-    @JsonManagedReference
     public Actor getActor()
     {
         return actor;
@@ -75,7 +71,6 @@ public class CharacterPK implements Serializable
 
     @ManyToOne
     @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
     public Movie getMovie()
     {
         return movie;

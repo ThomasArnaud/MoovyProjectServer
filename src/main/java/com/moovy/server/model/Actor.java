@@ -1,6 +1,6 @@
 package com.moovy.server.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -137,7 +137,7 @@ public class Actor
     }
 
     @OneToMany(mappedBy = "id.actor")
-    @JsonBackReference
+    @JsonIgnore
     public List<Character> getPlayedCharacters()
     {
         return playedCharacters;

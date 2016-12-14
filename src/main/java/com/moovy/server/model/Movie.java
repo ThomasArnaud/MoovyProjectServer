@@ -1,11 +1,10 @@
 package com.moovy.server.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -162,7 +161,7 @@ public class Movie
     }
 
     @OneToMany(mappedBy = "id.movie")
-    @JsonManagedReference
+    @JsonIgnore
     public List<Character> getCharacters()
     {
         return characters;
@@ -175,7 +174,6 @@ public class Movie
 
     @ManyToOne
     @JoinColumn(name = "id_director", referencedColumnName = "id", nullable = false)
-    @JsonManagedReference
     public Director getDirector()
     {
         return director;
@@ -189,12 +187,13 @@ public class Movie
     @ManyToMany
     @JoinTable(
         name = "movie_category",
-        catalog = "movie",
-        schema = "movie",
+        /*
+        catalog = "moovy",
+        schema = "moovy",
+        */
         joinColumns = @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false),
         inverseJoinColumns = @JoinColumn(name = "code_category", referencedColumnName = "code", nullable = false)
     )
-    @JsonManagedReference
     public List<Category> getCategories()
     {
         return categories;
