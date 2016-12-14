@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.ws.WebServiceException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +22,8 @@ import java.util.List;
  */
 
 @Path("/statistics")
-public class StatisticsWebservice {
-
+public class StatisticsWebservice
+{
     @Context
     UriInfo uriInfo;
 
@@ -33,31 +34,41 @@ public class StatisticsWebservice {
     @GET
     @Path("/dashboard")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDashboard() {
+    public Response getDashboard()
+    {
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
 
-        List<Integer> counts = null;
-        List<String> countsCategory = null;
-        countsCategory.add("Users");
-        countsCategory.add("Movies");
-        countsCategory.add("Actors");
-        countsCategory.add("Directors");
+        List<Long> counts = new ArrayList<>();
+        List<String> countsCategory = new ArrayList<>();
+        countsCategory.add("User");
+        countsCategory.add("Movie");
+        countsCategory.add("Actor");
+        countsCategory.add("Director");
 
-        try {
+        try
+        {
             transaction = session.beginTransaction();
-            for(String s : countsCategory) {
-                counts.add( ((Integer) session.createQuery("SELECT count(*) FROM " + s).iterate().next()).intValue());
+
+            for(String s : countsCategory)
+            {
+                counts.add((session.createQuery("SELECT count(*) FROM " + s, Long.class).getSingleResult()));
             }
+
+            transaction.commit();
+
             return Response
-                    .ok(counts)
-                    .build()
+                .ok(counts)
+                .build()
             ;
         }
-        catch (HibernateException ex) {
-            if (transaction != null) {
+        catch (HibernateException ex)
+        {
+            if (transaction != null)
+            {
                 transaction.rollback();
             }
+
             throw new WebServiceException(ex);
         }
     }
