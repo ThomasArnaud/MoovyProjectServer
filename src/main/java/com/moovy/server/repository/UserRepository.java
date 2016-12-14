@@ -29,7 +29,8 @@ public class UserRepository extends AbstractRepository<User>
         try
         {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT u FROM User u WHERE u.email=" + email);
+            Query query = session.createQuery("SELECT u FROM User u WHERE u.email=?1", User.class);
+            query.setParameter(1, "%" + email + "%");
             user = query.list();
 
             if (user.size() != 1)
