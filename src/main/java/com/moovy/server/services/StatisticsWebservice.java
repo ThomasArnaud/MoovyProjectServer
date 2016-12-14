@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.ws.WebServiceException;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
@@ -28,7 +28,7 @@ public class StatisticsWebservice {
 
     /**
      *
-     * @return List of counters containing number of entries in main tables
+     * @return Hashmap containing associations between tables and number of entries
      */
     @GET
     @Path("/dashboard")
@@ -37,20 +37,21 @@ public class StatisticsWebservice {
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
 
-        List<Integer> counts = null;
-        List<String> countsCategory = null;
-        countsCategory.add("Users");
-        countsCategory.add("Movies");
-        countsCategory.add("Actors");
-        countsCategory.add("Directors");
+        Map<String, Integer> map = null;
+        map.put("Users", Integer.MIN_VALUE);
+        map.put("Movies", Integer.MIN_VALUE);
+        map.put("Actors", Integer.MIN_VALUE);
+        map.put("Directors", Integer.MIN_VALUE);
 
         try {
-            transaction = session.beginTransaction();
-            for(String s : countsCategory) {
-                counts.add( ((Integer) session.createQuery("SELECT count(*) FROM " + s).iterate().next()).intValue());
+            for(String s : map.keySet()) {
+                transaction = session.beginTransaction();
+                map.remove(s);
+                map.put(s,((Integer) session.createQuery("SELECT count(*) FROM " + s).iterate().next()).intValue());
+                transaction.commit();
             }
             return Response
-                    .ok(counts)
+                    .ok(map)
                     .build()
             ;
         }
