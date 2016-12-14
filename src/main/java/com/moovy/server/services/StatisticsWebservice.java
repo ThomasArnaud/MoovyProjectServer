@@ -21,8 +21,8 @@ import java.util.Map;
  */
 
 @Path("/statistics")
-public class StatisticsWebservice {
-
+public class StatisticsWebservice
+{
     @Context
     UriInfo uriInfo;
 
@@ -33,7 +33,8 @@ public class StatisticsWebservice {
     @GET
     @Path("/dashboard")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getDashboard() {
+    public Response getDashboard()
+    {
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
 
@@ -55,10 +56,13 @@ public class StatisticsWebservice {
                     .build()
             ;
         }
-        catch (HibernateException ex) {
-            if (transaction != null) {
+        catch (HibernateException ex)
+        {
+            if (transaction != null)
+            {
                 transaction.rollback();
             }
+
             throw new WebServiceException(ex);
         }
     }
