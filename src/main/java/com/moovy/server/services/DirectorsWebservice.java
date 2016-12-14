@@ -2,6 +2,7 @@ package com.moovy.server.services;
 
 import com.moovy.server.model.Director;
 import com.moovy.server.repository.DirectorRepository;
+import com.moovy.server.utils.HibernateUtil;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -114,6 +115,7 @@ public class DirectorsWebservice
      * Updates a director from the database.
      *
      * @return A success or failure response.
+     * @todo Create AbstractRepository.exists(id) rather than fetching and detaching entity.
      */
     @PUT
     @Path("/{id}")
@@ -122,10 +124,12 @@ public class DirectorsWebservice
     {
         // Initialize vars
         DirectorRepository repository = new DirectorRepository();
+        Director existingDirector = repository.fetch(director.getId());
 
-        if(repository.fetch(director.getId()) != null)
+        if(existingDirector != null)
         {
             // Update the director
+            repository.detach(existingDirector);
             repository.save(director);
 
             // Build response

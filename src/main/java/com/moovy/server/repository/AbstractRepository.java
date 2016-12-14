@@ -164,4 +164,14 @@ public abstract class AbstractRepository<Entity>
             throw new RepositoryException(ex);
         }
     }
+
+    /**
+     * Detaches an entity from the Hibernate session.
+     *
+     * @param entity The entity to detach.
+     */
+    public void detach(Entity entity)
+    {
+        HibernateUtil.getSession().detach(entity);
+    }
 }
