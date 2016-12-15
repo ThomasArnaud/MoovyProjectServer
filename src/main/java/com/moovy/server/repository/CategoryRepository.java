@@ -42,29 +42,14 @@ public class CategoryRepository extends AbstractRepository<Category>
     {
         // Initialize vars
         Session session = HibernateUtil.getSession();
-        Transaction transaction = null;
         boolean entityExists = false;
 
-        // Tests the existence of a category
-        try
-        {
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT 1 FROM " + this.entityClass.getName() + " WHERE code = ?1 LIMIT 1", Integer.class);
-            query.setParameter(1, code);
-            entityExists = query.uniqueResult() != null;
-            transaction.commit();
+        // Tests the existence of an entity
+        Category entity = session.get(Category.class, code);
+        entityExists = entity != null;
+        session.detach(entity);
 
-            return entityExists;
-        }
-        catch(HibernateException ex)
-        {
-            if(transaction != null)
-            {
-                transaction.rollback();
-            }
-
-            throw new RepositoryException(ex);
-        }
+        return entityExists;
     }
 
     /**

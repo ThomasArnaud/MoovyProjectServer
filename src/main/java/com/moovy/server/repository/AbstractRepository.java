@@ -40,30 +40,14 @@ public abstract class AbstractRepository<Entity>
     {
         // Initialize vars
         Session session = HibernateUtil.getSession();
-        Transaction transaction = null;
         boolean entityExists = false;
 
         // Tests the existence of an entity
-        try
-        {
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("SELECT 1 FROM " + this.entityClass.getName() + " WHERE id = ?1", Integer.class);
-            query.setParameter(1, id);
-            query.setMaxResults(1);
-            entityExists = query.uniqueResult() != null;
-            transaction.commit();
+        Entity entity = session.get(this.entityClass, id);
+        entityExists = entity != null;
+        session.detach(entity);
 
-            return entityExists;
-        }
-        catch(HibernateException ex)
-        {
-            if(transaction != null)
-            {
-                transaction.rollback();
-            }
-
-            throw new RepositoryException(ex);
-        }
+        return entityExists;
     }
 
     /**
