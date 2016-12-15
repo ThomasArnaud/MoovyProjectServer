@@ -115,7 +115,6 @@ public class DirectorsWebservice
      * Updates a director from the database.
      *
      * @return A success or failure response.
-     * @todo Create AbstractRepository.exists(id) rather than fetching and detaching entity.
      */
     @PUT
     @Path("/{id}")

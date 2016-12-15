@@ -44,7 +44,11 @@ public abstract class AbstractRepository<Entity>
         // Tests the existence of an entity
         Entity entity = session.get(this.entityClass, id);
         entityExists = entity != null;
-        session.detach(entity);
+
+        if(entityExists)
+        {
+            session.detach(entity);
+        }
 
         return entityExists;
     }
@@ -86,13 +90,9 @@ public abstract class AbstractRepository<Entity>
         // Fetch the entities
         try
         {
-            System.out.println("fetchAll.beforeBeginTransaction: " + session.isJoinedToTransaction());
             transaction = session.beginTransaction();
-            System.out.println("fetchAll.beforeCreateQuery: " + session.isJoinedToTransaction());
             entities = session.createQuery("FROM " + this.entityClass.getName(), this.entityClass).list();
-            System.out.println("fetchAll.afterList: " + session.isJoinedToTransaction());
             transaction.commit();
-            System.out.println("fetchAll.afterCommit: " + session.isJoinedToTransaction());
 
             return entities;
         }
@@ -116,6 +116,7 @@ public abstract class AbstractRepository<Entity>
     public void save(Entity entity)
     throws HibernateException
     {
+        System.out.println("contains(" + entity + ") = " + HibernateUtil.getSession().contains(entity));
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
@@ -124,7 +125,9 @@ public abstract class AbstractRepository<Entity>
         try
         {
             transaction = session.beginTransaction();
+            System.out.println("contains(" + entity + ") = " + HibernateUtil.getSession().contains(entity));
             session.saveOrUpdate(entity);
+            System.out.println("contains(" + entity + ") = " + HibernateUtil.getSession().contains(entity));
             transaction.commit();
         }
         catch(HibernateException ex)

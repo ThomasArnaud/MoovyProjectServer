@@ -28,7 +28,6 @@ import javax.ws.rs.core.UriInfo;
 @Path("/categories")
 public class CategoriesWebservice
 {
-
     /**
      *
      */
@@ -45,9 +44,7 @@ public class CategoriesWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam("code") String code)
     {
-        System.out.println("beforeFetch:" + HibernateUtil.getSession().isJoinedToTransaction());
         Category category = new CategoryRepository().fetch(code);
-        System.out.println("afterFetch:" + HibernateUtil.getSession().isJoinedToTransaction());
 
         if (category != null)
         {
@@ -77,7 +74,6 @@ public class CategoriesWebservice
         // Initialize vars
         CategoryRepository repository = new CategoryRepository();
 
-        System.out.println("beforeFetchAll:" + HibernateUtil.getSession().isJoinedToTransaction());
         return Response
             .ok(repository.fetchAll())
             .build()
@@ -85,69 +81,22 @@ public class CategoriesWebservice
     }
 
     /**
-     * Adds a new category to the database.
-     *
-     * @return A success or failure response.
-     */
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(Category category)
-    {
-        System.out.println("beforeSave:" + HibernateUtil.getSession().isJoinedToTransaction());
-        new CategoryRepository().save(category);
-        System.out.println("afterSave:" + HibernateUtil.getSession().isJoinedToTransaction());
-
-        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path("/categories/" + category.getCode());
-
-        return Response
-            .created(uriBuilder.build())
-            .build()
-        ;
-    }
-
-    /**
-     * Updates a category from the database.
+     * Adds or updates a category from the database.
      *
      * @return A success or failure response.
      */
     @PUT
-    @Path("/{code}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(Category category)
+    public Response addOrUpdate(Category category)
     {
-        System.out.println("beforeTest:" + HibernateUtil.getSession().isJoinedToTransaction());
-        HibernateUtil.getSession().beginTransaction();
-        System.out.println("test:" + HibernateUtil.getSession().isJoinedToTransaction());
-        HibernateUtil.getSession().getTransaction().commit();
-        System.out.println("afterTest:" + HibernateUtil.getSession().isJoinedToTransaction());
-        // Initialize vars
-        CategoryRepository repository = new CategoryRepository();
+        // Add or update the category
+        new CategoryRepository().save(category);
 
-        System.out.println("beforeAnything:" + HibernateUtil.getSession().isJoinedToTransaction());
-
-        if(repository.exists(category.getCode()))
-        {
-            System.out.println("beforeSave:" + HibernateUtil.getSession().isJoinedToTransaction());
-
-            // Update the category
-            repository.save(category);
-
-            System.out.println("afterSave:" + HibernateUtil.getSession().isJoinedToTransaction());
-
-            // Build response
-            return Response
-                .ok()
-                .build()
-            ;
-        }
-        else
-        {
-            return Response
-                .status(Response.Status.BAD_REQUEST)
-                .build()
-            ;
-        }
+        // Build response
+        return Response
+            .ok()
+            .build()
+        ;
     }
 
     /**
