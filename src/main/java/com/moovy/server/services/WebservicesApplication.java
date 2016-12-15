@@ -29,7 +29,6 @@ public class WebservicesApplication extends Application
     public WebservicesApplication()
     {
         // Define the available webservices
-        this.singletons.add(new ExampleWebservice());
         this.singletons.add(new MoviesWebservice());
         this.singletons.add(new CategoriesWebservice());
         this.singletons.add(new ActorsWebservice());
