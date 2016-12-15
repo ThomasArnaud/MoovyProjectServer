@@ -110,7 +110,7 @@ public class ActorsWebservice
         // Initialize vars
         ActorRepository repository = new ActorRepository();
 
-        if(repository.fetch(actor.getId()) != null)
+        if(repository.exists(actor.getId()))
         {
             // Update the actor
             repository.save(actor);

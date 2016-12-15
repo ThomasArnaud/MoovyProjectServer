@@ -25,9 +25,10 @@ public class UserRepository extends AbstractRepository<User>
     }
 
     /**
+     * Fetches an user by their email address.
      *
-     * @param email
-     * @return
+     * @param email The user's email address.
+     * @return Ther wanted user, or {@code false} otherwise.
      */
     public User fetchByEmail(String email)
     {
@@ -44,9 +45,9 @@ public class UserRepository extends AbstractRepository<User>
             query.setParameter(1, "%" + email + "%");
             user = query.list();
 
-            if (user.size() != 1)
+            if(user.size() != 1)
             {
-                if (user.size() == 0)
+                if(user.size() == 0)
                 {
                     System.out.println("User not found");
                 }
@@ -55,10 +56,14 @@ public class UserRepository extends AbstractRepository<User>
                     System.out.println("Duplicate mail found");
                 }
 
+                transaction.commit();
+
                 return null;
             }
             else
             {
+                transaction.commit();
+
                 return user.get(0);
             }
         }
@@ -68,8 +73,8 @@ public class UserRepository extends AbstractRepository<User>
             {
                 transaction.rollback();
             }
+
             throw new RepositoryException(ex);
         }
-
     }
 }

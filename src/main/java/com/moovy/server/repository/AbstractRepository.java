@@ -4,6 +4,7 @@ import com.moovy.server.utils.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -30,6 +31,42 @@ public abstract class AbstractRepository<Entity>
     }
 
     /**
+     * Tests if an entity exists.
+     *
+     * @param id The entity's id.
+     * @return {@code true} if the entity exists, {@code false} otherwise.
+     */
+    public boolean exists(int id)
+    {
+        // Initialize vars
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = null;
+        boolean entityExists = false;
+
+        // Tests the existence of an entity
+        try
+        {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("SELECT 1 FROM " + this.entityClass.getName() + " WHERE id = ?1", Integer.class);
+            query.setParameter(1, id);
+            query.setMaxResults(1);
+            entityExists = query.uniqueResult() != null;
+            transaction.commit();
+
+            return entityExists;
+        }
+        catch(HibernateException ex)
+        {
+            if(transaction != null)
+            {
+                transaction.rollback();
+            }
+
+            throw new RepositoryException(ex);
+        }
+    }
+
+    /**
      * Fetches a single entity from the database.
      *
      * @param id The entity's id.
@@ -42,26 +79,6 @@ public abstract class AbstractRepository<Entity>
         try
         {
             return HibernateUtil.getSession().get(this.entityClass, id);
-        }
-        catch(HibernateException ex)
-        {
-            throw new RepositoryException(ex);
-        }
-    }
-
-    /**
-     * Fetches a single entity from the database, where the entity's primary key is not an ID.
-     *
-     * @param code The entity's code.
-     * @return The wanted entity or {@code null} otherwise.
-     * @throws HibernateException If an Hibernate error happens.
-     */
-    public Entity fetch(String code)
-    throws HibernateException
-    {
-        try
-        {
-            return HibernateUtil.getSession().get(this.entityClass, code);
         }
         catch(HibernateException ex)
         {
@@ -163,15 +180,5 @@ public abstract class AbstractRepository<Entity>
 
             throw new RepositoryException(ex);
         }
-    }
-
-    /**
-     * Detaches an entity from the Hibernate session.
-     *
-     * @param entity The entity to detach.
-     */
-    public void detach(Entity entity)
-    {
-        HibernateUtil.getSession().detach(entity);
     }
 }

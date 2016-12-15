@@ -124,12 +124,10 @@ public class DirectorsWebservice
     {
         // Initialize vars
         DirectorRepository repository = new DirectorRepository();
-        Director existingDirector = repository.fetch(director.getId());
 
-        if(existingDirector != null)
+        if(repository.exists(director.getId()))
         {
             // Update the director
-            repository.detach(existingDirector);
             repository.save(director);
 
             // Build response

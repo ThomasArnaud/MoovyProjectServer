@@ -124,7 +124,7 @@ public class CategoriesWebservice
         // Initialize vars
         CategoryRepository repository = new CategoryRepository();
 
-        if(repository.fetch(category.getCode()) != null)
+        if(repository.exists(category.getCode()))
         {
             // Update the category
             repository.save(category);

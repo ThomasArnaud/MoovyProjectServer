@@ -123,7 +123,7 @@ public class MoviesWebservice
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 
-        if(repository.fetch(movie.getId()) != null)
+        if(repository.exists(movie.getId()))
         {
             // Update the movie
             repository.save(movie);
