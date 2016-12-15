@@ -4,7 +4,6 @@ import com.moovy.server.utils.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -87,9 +86,13 @@ public abstract class AbstractRepository<Entity>
         // Fetch the entities
         try
         {
+            System.out.println("fetchAll.beforeBeginTransaction: " + session.isJoinedToTransaction());
             transaction = session.beginTransaction();
+            System.out.println("fetchAll.beforeCreateQuery: " + session.isJoinedToTransaction());
             entities = session.createQuery("FROM " + this.entityClass.getName(), this.entityClass).list();
+            System.out.println("fetchAll.afterList: " + session.isJoinedToTransaction());
             transaction.commit();
+            System.out.println("fetchAll.afterCommit: " + session.isJoinedToTransaction());
 
             return entities;
         }

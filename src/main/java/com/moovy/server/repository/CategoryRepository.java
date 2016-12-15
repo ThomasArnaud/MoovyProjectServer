@@ -41,10 +41,15 @@ public class CategoryRepository extends AbstractRepository<Category>
         Session session = HibernateUtil.getSession();
         boolean entityExists = false;
 
+        System.out.println("beforeGet:" + session.isJoinedToTransaction());
+
         // Tests the existence of an entity
         Category entity = session.get(Category.class, code);
+        System.out.println("afterGet:" + session.isJoinedToTransaction());
         entityExists = entity != null;
+        System.out.println("beforeDetach:" + session.isJoinedToTransaction());
         session.detach(entity);
+        System.out.println("afterDetach:" + session.isJoinedToTransaction());
 
         return entityExists;
     }

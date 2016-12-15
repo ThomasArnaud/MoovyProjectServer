@@ -2,6 +2,7 @@ package com.moovy.server.services;
 
 import com.moovy.server.model.Category;
 import com.moovy.server.repository.CategoryRepository;
+import com.moovy.server.utils.HibernateUtil;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,7 +12,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,7 +45,9 @@ public class CategoriesWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam("code") String code)
     {
+        System.out.println("beforeFetch:" + HibernateUtil.getSession().isJoinedToTransaction());
         Category category = new CategoryRepository().fetch(code);
+        System.out.println("afterFetch:" + HibernateUtil.getSession().isJoinedToTransaction());
 
         if (category != null)
         {
@@ -64,31 +66,22 @@ public class CategoriesWebservice
     }
 
     /**
-     * Produces a list of categories that can be filtered through a "query" parameter.
+     * Produces a list of categories.
      *
      * @return The list of categories.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(@QueryParam("query") String query)
+    public Response getList()
     {
         // Initialize vars
         CategoryRepository repository = new CategoryRepository();
 
-        if(query != null && !query.trim().isEmpty())
-        {
-            return Response
-                .ok(repository.lookup(query))
-                .build()
-            ;
-        }
-        else
-        {
-            return Response
-                .ok(repository.fetchAll())
-                .build()
-            ;
-        }
+        System.out.println("beforeFetchAll:" + HibernateUtil.getSession().isJoinedToTransaction());
+        return Response
+            .ok(repository.fetchAll())
+            .build()
+        ;
     }
 
     /**
@@ -100,7 +93,9 @@ public class CategoriesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Category category)
     {
+        System.out.println("beforeSave:" + HibernateUtil.getSession().isJoinedToTransaction());
         new CategoryRepository().save(category);
+        System.out.println("afterSave:" + HibernateUtil.getSession().isJoinedToTransaction());
 
         UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
         uriBuilder.path("/categories/" + category.getCode());
@@ -121,13 +116,24 @@ public class CategoriesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Category category)
     {
+        System.out.println("beforeTest:" + HibernateUtil.getSession().isJoinedToTransaction());
+        HibernateUtil.getSession().beginTransaction();
+        System.out.println("test:" + HibernateUtil.getSession().isJoinedToTransaction());
+        HibernateUtil.getSession().getTransaction().commit();
+        System.out.println("afterTest:" + HibernateUtil.getSession().isJoinedToTransaction());
         // Initialize vars
         CategoryRepository repository = new CategoryRepository();
 
+        System.out.println("beforeAnything:" + HibernateUtil.getSession().isJoinedToTransaction());
+
         if(repository.exists(category.getCode()))
         {
+            System.out.println("beforeSave:" + HibernateUtil.getSession().isJoinedToTransaction());
+
             // Update the category
             repository.save(category);
+
+            System.out.println("afterSave:" + HibernateUtil.getSession().isJoinedToTransaction());
 
             // Build response
             return Response
