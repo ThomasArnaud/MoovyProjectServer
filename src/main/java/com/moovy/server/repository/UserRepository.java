@@ -7,8 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.List;
-
 /**
  * @author Thomas Arnaud (thomas.arnaud@etu.univ-lyon1.fr)
  * @author Bruno Buiret (bruno.buiret@etu.univ-lyon1.fr)
@@ -35,37 +33,19 @@ public class UserRepository extends AbstractRepository<User>
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
-        List<User> user;
+        User user = null;
 
         // Fetch the user
         try
         {
             transaction = session.beginTransaction();
             Query query = session.createQuery("SELECT u FROM User u WHERE u.email = ?1", User.class);
-            query.setParameter(1, "%" + email + "%");
-            user = query.list();
+            query.setParameter(1, email);
+            query.setMaxResults(1);
+            user = (User) query.getSingleResult();
+            transaction.commit();
 
-            if(user.size() != 1)
-            {
-                if(user.size() == 0)
-                {
-                    System.out.println("User not found");
-                }
-                else
-                {
-                    System.out.println("Duplicate mail found");
-                }
-
-                transaction.commit();
-
-                return null;
-            }
-            else
-            {
-                transaction.commit();
-
-                return user.get(0);
-            }
+            return user;
         }
         catch(HibernateException ex)
         {
