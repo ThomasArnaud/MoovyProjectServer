@@ -1,5 +1,7 @@
 package com.moovy.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -71,6 +73,7 @@ public class CharacterPK implements Serializable
 
     @ManyToOne
     @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     public Movie getMovie()
     {
         return movie;
