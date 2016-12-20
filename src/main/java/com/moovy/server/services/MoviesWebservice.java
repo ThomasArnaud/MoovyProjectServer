@@ -2,6 +2,7 @@ package com.moovy.server.services;
 
 import com.moovy.server.model.Movie;
 import com.moovy.server.repository.MovieRepository;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,6 +27,8 @@ import javax.ws.rs.core.UriInfo;
 @Path("/movies")
 public class MoviesWebservice
 {
+    protected static Logger logger = Logger.getLogger(MoviesWebservice.class);
+
     /**
      *
      */
@@ -41,6 +44,7 @@ public class MoviesWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList(@QueryParam("query") String query)
     {
+        logger.debug("getList(" + query + ")");
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 
@@ -70,6 +74,7 @@ public class MoviesWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam("id") int id)
     {
+        logger.debug("getOne(" + id + ")");
         Movie movie = new MovieRepository().fetch(id);
 
         if(movie != null)
@@ -97,6 +102,7 @@ public class MoviesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Movie movie)
     {
+        logger.debug("add(" + movie + ")");
         // Save the new movie
         new MovieRepository().save(movie);
 
@@ -120,6 +126,7 @@ public class MoviesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Movie movie)
     {
+        logger.debug("update(" + movie + ")");
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 
@@ -153,6 +160,7 @@ public class MoviesWebservice
     @Path("/{id}")
     public Response delete(@PathParam("id") int id)
     {
+        logger.debug("delete(" + id + ")");
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 

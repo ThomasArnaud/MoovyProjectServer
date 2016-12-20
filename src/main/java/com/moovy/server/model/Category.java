@@ -2,11 +2,7 @@ package com.moovy.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -24,6 +20,7 @@ public class Category
     private List<Movie> movies;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "code", nullable = false, length = 2)
     public String getCode()
     {

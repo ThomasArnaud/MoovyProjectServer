@@ -1,9 +1,6 @@
 package com.moovy.server.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 /**
@@ -24,6 +21,7 @@ public class User
     private String password;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId()
     {
@@ -60,7 +58,7 @@ public class User
     }
 
     @Basic
-    @Column(name = "email", nullable = false, length = 40)
+    @Column(name = "email", nullable = false, length = 40, unique = true)
     public String getEmail()
     {
         return email;

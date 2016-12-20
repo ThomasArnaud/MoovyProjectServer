@@ -1,6 +1,7 @@
 package com.moovy.server.repository;
 
 import com.moovy.server.utils.HibernateUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,6 +15,8 @@ import java.util.List;
  */
 public abstract class AbstractRepository<Entity>
 {
+    protected static Logger logger = Logger.getLogger(AbstractRepository.class);
+    
     /**
      * The repository's entity's type.
      */
@@ -37,6 +40,7 @@ public abstract class AbstractRepository<Entity>
      */
     public boolean exists(int id)
     {
+        logger.debug(this.entityClass.getSimpleName() + ".exists(" + id + ")");
         // Initialize vars
         Session session = HibernateUtil.getSession();
         boolean entityExists = false;
@@ -63,6 +67,7 @@ public abstract class AbstractRepository<Entity>
     public Entity fetch(int id)
     throws HibernateException
     {
+        logger.debug(this.entityClass.getSimpleName() + ".fetch(" + id + ")");
         try
         {
             return HibernateUtil.getSession().get(this.entityClass, id);
@@ -82,6 +87,7 @@ public abstract class AbstractRepository<Entity>
     public List<Entity> fetchAll()
     throws HibernateException
     {
+        logger.debug(this.entityClass.getSimpleName() + ".fetchAll()");
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
@@ -116,7 +122,7 @@ public abstract class AbstractRepository<Entity>
     public void save(Entity entity)
     throws HibernateException
     {
-        System.out.println("contains(" + entity + ") = " + HibernateUtil.getSession().contains(entity));
+        logger.debug(this.entityClass.getSimpleName() + ".save(" + entity + ")");
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
@@ -125,9 +131,7 @@ public abstract class AbstractRepository<Entity>
         try
         {
             transaction = session.beginTransaction();
-            System.out.println("contains(" + entity + ") = " + HibernateUtil.getSession().contains(entity));
             session.saveOrUpdate(entity);
-            System.out.println("contains(" + entity + ") = " + HibernateUtil.getSession().contains(entity));
             transaction.commit();
         }
         catch(HibernateException ex)
@@ -150,6 +154,7 @@ public abstract class AbstractRepository<Entity>
     public void delete(Entity entity)
     throws HibernateException
     {
+        logger.debug(this.entityClass.getSimpleName() + ".delete(" + entity + ")");
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
