@@ -24,9 +24,9 @@ ENGINE=InnoDB;
 --
 
 CREATE TABLE IF NOT EXISTS `category` (
-  `code` varchar(2) NOT NULL,
+  `id` int(2) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
-  PRIMARY KEY (`code`)
+  PRIMARY KEY (`id`)
 )
 CHARACTER SET utf8 COLLATE utf8_general_ci
 ENGINE=InnoDB;
@@ -67,8 +67,8 @@ ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `movie_category` (
   `id_movie` int(2) NOT NULL,
-  `code_category` varchar(2) NOT NULL,
-  PRIMARY KEY (`id_movie`, `code_category`)
+  `id_category` int(2) NOT NULL,
+  PRIMARY KEY (`id_movie`, `id_category`)
 )
 CHARACTER SET utf8 COLLATE utf8_general_ci
 ENGINE=InnoDB;
@@ -120,7 +120,7 @@ ALTER TABLE `character`
 --
 ALTER TABLE `movie_category`
   ADD CONSTRAINT `movie_category_ibfk_1` FOREIGN KEY (`id_movie`) REFERENCES movie (`id`),
-  ADD CONSTRAINT `movie_category_ibfk_2` FOREIGN KEY (`code_category`) REFERENCES category (`code`);
+  ADD CONSTRAINT `movie_category_ibfk_2` FOREIGN KEY (`id_category`) REFERENCES category (`id`);
 
 --
 -- Contraintes pour la table 'user'

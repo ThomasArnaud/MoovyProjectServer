@@ -18,10 +18,10 @@ INSERT INTO actor VALUES
 --
 
 INSERT INTO category VALUES
-('AC', 'Action'),
-('CO', 'Comédie'),
-('PO', 'Policier'),
-('WE', 'Western');
+(1, 'Action'),
+(2, 'Comédie'),
+(3, 'Policier'),
+(4, 'Western');
 
 --
 -- Contenu de la table 'director'
@@ -67,11 +67,11 @@ INSERT INTO `character` VALUES
 --
 
 INSERT INTO movie_category VALUES
-(1, 'PO'),
-(2, 'PO'),
-(3, 'AC'),
-(4, 'PO'),
-(5, 'AC');
+(1, 3),
+(2, 3),
+(3, 1),
+(4, 3),
+(5, 1);
 
 INSERT INTO `user` VALUES
 (1, 'Bruno', 'Buiret', 'bruno.buiret@etu.univ-lyon1.fr', NOW(), 'abb6d80c7043dbccaa67b767ce55a0441aa9d0774d57962796cabd520dbdedbc'),

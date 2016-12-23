@@ -181,7 +181,7 @@ public class Movie
     @JoinTable(
         name = "movie_category",
         joinColumns = @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false),
-        inverseJoinColumns = @JoinColumn(name = "code_category", referencedColumnName = "code", nullable = false)
+        inverseJoinColumns = @JoinColumn(name = "id_category", referencedColumnName = "id", nullable = false)
     )
     public List<Category> getCategories()
     {

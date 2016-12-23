@@ -75,6 +75,12 @@ public class CharactersWebservice
 
         if(movie != null)
         {
+            // Attach movie
+            for(Character character : characters)
+            {
+                character.getId().setMovie(movie);
+            }
+
             // Define characters
             movie.setCharacters(characters);
 

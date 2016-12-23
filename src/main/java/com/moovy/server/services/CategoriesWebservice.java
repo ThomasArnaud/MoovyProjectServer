@@ -2,7 +2,6 @@ package com.moovy.server.services;
 
 import com.moovy.server.model.Category;
 import com.moovy.server.repository.CategoryRepository;
-import com.moovy.server.utils.HibernateUtil;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -42,9 +41,9 @@ public class CategoriesWebservice
     @GET
     @Path("/{code}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOne(@PathParam("code") String code)
+    public Response getOne(@PathParam("code") int id)
     {
-        Category category = new CategoryRepository().fetch(code);
+        Category category = new CategoryRepository().fetch(id);
 
         if (category != null)
         {
@@ -81,40 +80,76 @@ public class CategoriesWebservice
     }
 
     /**
-     * Adds or updates a category from the database.
+     * Adds a new category to the database.
      *
      * @return A success or failure response.
      */
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addOrUpdate(Category category)
+    public Response add(Category category)
     {
-        // Add or update the category
+        // Save the new category
         new CategoryRepository().save(category);
 
         // Build response
+        UriBuilder uriBuilder = this.uriInfo.getAbsolutePathBuilder();
+        uriBuilder.path("/categories/" + category.getId());
+
         return Response
-            .ok()
+            .created(uriBuilder.build())
             .build()
         ;
     }
 
     /**
+     * Updates a category from the database.
+     *
+     * @return A success or failure response.
+     */
+    @PUT
+    @Path("/{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response update(Category category)
+    {
+        // Initialize vars
+        CategoryRepository repository = new CategoryRepository();
+
+        if(repository.exists(category.getId()))
+        {
+            // Update the category
+            repository.save(category);
+
+            // Build response
+            return Response
+                .ok()
+                .build()
+            ;
+        }
+        else
+        {
+            return Response
+                .status(Response.Status.NOT_FOUND)
+                .build()
+            ;
+        }
+    }
+
+    /**
      * Deletes a category from the database.
      *
-     * @param code The category's code.
+     * @param id The category's id.
      * @return A success or failure response.
      */
     @DELETE
     @Path("/{code}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("code") String code)
+    public Response delete(@PathParam("code") int id)
     {
         // Initialize vars
         CategoryRepository repository = new CategoryRepository();
 
         // Does the category exist?
-        Category category = repository.fetch(code);
+        Category category = repository.fetch(id);
 
         if(category != null)
         {

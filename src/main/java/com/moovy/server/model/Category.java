@@ -15,20 +15,21 @@ import java.util.List;
 @Entity
 public class Category
 {
-    private String code;
+    private int id;
     private String name;
     private List<Movie> movies;
 
     @Id
-    @Column(name = "code", nullable = false, length = 2)
-    public String getCode()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    public int getId()
     {
-        return code;
+        return id;
     }
 
-    public void setCode(String code)
+    public void setId(int id)
     {
-        this.code = code;
+        this.id = id;
     }
 
     @Basic
@@ -57,7 +58,7 @@ public class Category
 
         Category category = (Category) o;
 
-        if (code != null ? !code.equals(category.code) : category.code != null)
+        if (id != category.id)
         {
             return false;
         }
@@ -72,7 +73,7 @@ public class Category
     @Override
     public int hashCode()
     {
-        int result = code != null ? code.hashCode() : 0;
+        int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
