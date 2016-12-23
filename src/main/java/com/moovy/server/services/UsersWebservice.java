@@ -28,6 +28,7 @@ public class UsersWebservice
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response loginUser(Map<String, String> loginData)
     {
         // Initialize vars
@@ -38,6 +39,7 @@ public class UsersWebservice
         {
             return Response
                 .status(Response.Status.BAD_REQUEST)
+                .type(MediaType.APPLICATION_JSON_TYPE)
                 .build()
             ;
         }
@@ -48,6 +50,7 @@ public class UsersWebservice
         {
             return Response
                 .status(Response.Status.UNAUTHORIZED)
+                .type(MediaType.APPLICATION_JSON_TYPE)
                 .build()
             ;
         }
@@ -57,9 +60,12 @@ public class UsersWebservice
         {
             return Response
                 .status(Response.Status.BAD_REQUEST)
+                .type(MediaType.APPLICATION_JSON_TYPE)
                 .build()
             ;
         }
+
+        System.out.println(loginData);
 
         if(user.getPassword().equals(HashUtil.sha256("Moovy" + loginData.get("password"))))
         {
@@ -71,6 +77,7 @@ public class UsersWebservice
 
         return Response
             .status(Response.Status.UNAUTHORIZED)
+            .type(MediaType.APPLICATION_JSON_TYPE)
             .build()
         ;
     }
@@ -85,16 +92,28 @@ public class UsersWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registerUser(User user)
     {
-        // Hash password
-        user.setPassword(HashUtil.sha256("Moovy" + user.getPassword()));
+        // Initialize vars
+        UserRepository repository = new UserRepository();
 
-        // Then, save user
-        new UserRepository().save(user);
+        if(!repository.exists(user.getEmail()))
+        {
+            // Hash password with salt
+            user.setPassword(HashUtil.sha256("Moovy" + user.getPassword()));
 
-        return Response
-            .ok()
-            .build()
-        ;
+            // Then, save user
+            repository.save(user);
+
+            return Response
+                .ok()
+                .build()
+            ;
+        }
+        else
+        {
+            return Response
+                .status(Response.Status.CONFLICT)
+                .build()
+            ;
+        }
     }
-
 }

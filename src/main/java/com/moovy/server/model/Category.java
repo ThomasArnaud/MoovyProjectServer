@@ -20,7 +20,6 @@ public class Category
     private List<Movie> movies;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "code", nullable = false, length = 2)
     public String getCode()
     {
@@ -78,7 +77,7 @@ public class Category
         return result;
     }
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnore
     public List<Movie> getMovies()
     {

@@ -23,6 +23,41 @@ public class UserRepository extends AbstractRepository<User>
     }
 
     /**
+     *
+     * @param email
+     * @return
+     */
+    public boolean exists(String email)
+    {
+        // Initialize vars
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = null;
+        int usersNumber;
+
+        // Fetch the user
+        try
+        {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("SELECT count(u) FROM User u WHERE u.email = ?1", Long.class);
+            query.setParameter(1, email);
+            query.setMaxResults(1);
+            usersNumber = ((Long) query.getSingleResult()).intValue();
+            transaction.commit();
+
+            return usersNumber > 0;
+        }
+        catch(HibernateException ex)
+        {
+            if (transaction != null)
+            {
+                transaction.rollback();
+            }
+
+            throw new RepositoryException(ex);
+        }
+    }
+
+    /**
      * Fetches an user by their email address.
      *
      * @param email The user's email address.

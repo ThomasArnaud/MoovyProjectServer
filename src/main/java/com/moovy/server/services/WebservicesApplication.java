@@ -1,5 +1,7 @@
 package com.moovy.server.services;
 
+import com.moovy.server.mappers.UnexpectedExceptionMapper;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
@@ -36,6 +38,9 @@ public class WebservicesApplication extends Application
         this.singletons.add(new StatisticsWebservice());
         this.singletons.add(new UsersWebservice());
         this.singletons.add(new CharactersWebservice());
+
+        // Define mappers
+        this.singletons.add(new UnexpectedExceptionMapper());
     }
 
     /**

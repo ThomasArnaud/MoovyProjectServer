@@ -76,5 +76,5 @@ INSERT INTO movie_category VALUES
 INSERT INTO `user` VALUES
 (1, 'Bruno', 'Buiret', 'bruno.buiret@etu.univ-lyon1.fr', NOW(), 'abb6d80c7043dbccaa67b767ce55a0441aa9d0774d57962796cabd520dbdedbc'),
 (2, 'Thomas', 'Arnaud', 'thomas.arnaud@etu.univ-lyon1.fr', NOW(), 'abb6d80c7043dbccaa67b767ce55a0441aa9d0774d57962796cabd520dbdedbc'),
-(3, 'Alexis', 'Rabilloud', 'alexis.rabilloud@univ-lyon1.fr', NOW(), 'abb6d80c7043dbccaa67b767ce55a0441aa9d0774d57962796cabd520dbdedbc'),
+(3, 'Alexis', 'Rabilloud', 'alexis.rabilloud@etu.univ-lyon1.fr', NOW(), 'abb6d80c7043dbccaa67b767ce55a0441aa9d0774d57962796cabd520dbdedbc'),
 (4, 'Christian', 'Vial', 'christian.vial@univ-lyon1.fr', NOW(), 'abb6d80c7043dbccaa67b767ce55a0441aa9d0774d57962796cabd520dbdedbc');

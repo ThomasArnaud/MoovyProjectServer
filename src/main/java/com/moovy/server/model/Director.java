@@ -96,7 +96,7 @@ public class Director
         return result;
     }
 
-    @OneToMany(mappedBy = "director")
+    @OneToMany(mappedBy = "director", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JsonIgnore
     public List<Movie> getDirectedMovies()
     {

@@ -1,6 +1,10 @@
 package com.moovy.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.sql.Date;
 
 /**
@@ -18,6 +22,7 @@ public class User
     private String lastName;
     private String email;
     private Date createdAt;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Id
@@ -83,6 +88,7 @@ public class User
 
     @Basic
     @Column(name = "password", nullable = false, length = 25)
+    @JsonIgnore
     public String getPassword()
     {
         return password;

@@ -2,6 +2,7 @@ package com.moovy.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -59,7 +60,7 @@ public class CharacterPK implements Serializable
         return result;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "id_actor", referencedColumnName = "id", nullable = false)
     public Actor getActor()
     {
@@ -71,7 +72,7 @@ public class CharacterPK implements Serializable
         this.actor = actor;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false)
     @JsonIgnore
     public Movie getMovie()

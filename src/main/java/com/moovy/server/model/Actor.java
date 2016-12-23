@@ -2,11 +2,7 @@ package com.moovy.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
@@ -28,6 +24,7 @@ public class Actor
     private List<Character> playedCharacters;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId()
     {
@@ -136,7 +133,7 @@ public class Actor
         return result;
     }
 
-    @OneToMany(mappedBy = "id.actor")
+    @OneToMany(mappedBy = "id.actor", cascade = CascadeType.ALL)
     @JsonIgnore
     public List<Character> getPlayedCharacters()
     {

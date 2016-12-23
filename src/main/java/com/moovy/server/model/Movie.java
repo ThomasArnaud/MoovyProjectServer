@@ -153,7 +153,7 @@ public class Movie
         return result;
     }
 
-    @OneToMany(mappedBy = "id.movie")
+    @OneToMany(mappedBy = "id.movie", cascade = CascadeType.ALL)
     @JsonIgnore
     public List<Character> getCharacters()
     {
@@ -165,7 +165,7 @@ public class Movie
         this.characters = characters;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "id_director", referencedColumnName = "id", nullable = false)
     public Director getDirector()
     {
@@ -177,13 +177,9 @@ public class Movie
         this.director = director;
     }
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, })
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
         name = "movie_category",
-        /*
-        catalog = "moovy",
-        schema = "moovy",
-        */
         joinColumns = @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false),
         inverseJoinColumns = @JoinColumn(name = "code_category", referencedColumnName = "code", nullable = false)
     )
