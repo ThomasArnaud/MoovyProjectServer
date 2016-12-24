@@ -23,9 +23,10 @@ public class UserRepository extends AbstractRepository<User>
     }
 
     /**
+     * Tests if an user exists by their email address.
      *
-     * @param email
-     * @return
+     * @param email The user's email address.
+     * @return {@code true} if the user exists, {@code false} otherwise.
      */
     public boolean exists(String email)
     {

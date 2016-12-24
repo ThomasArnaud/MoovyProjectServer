@@ -28,7 +28,7 @@ import javax.ws.rs.core.UriInfo;
 public class CategoriesWebservice
 {
     /**
-     *
+     * The context's URI info.
      */
     @Context
     UriInfo uriInfo;
@@ -160,7 +160,8 @@ public class CategoriesWebservice
                 .build()
             ;
         }
-        else {
+        else
+        {
             return Response
                 .status(Response.Status.NOT_FOUND)
                 .build()

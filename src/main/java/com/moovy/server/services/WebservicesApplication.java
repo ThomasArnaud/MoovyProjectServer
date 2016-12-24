@@ -16,12 +16,12 @@ import java.util.Set;
 public class WebservicesApplication extends Application
 {
     /**
-     *
+     * The application's components.
      */
     protected Set<Object> singletons = new HashSet<>();
 
     /**
-     *
+     * An empty set of classes.
      */
     protected Set<Class<?>> empty = new HashSet<>();
 

@@ -13,6 +13,12 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class UnexpectedExceptionMapper implements ExceptionMapper<Exception>
 {
+    /**
+     * Maps any kind of exception to an HTTP response.
+     *
+     * @param exception The exception that occurred.
+     * @return The corresponding HTTP response.
+     */
     @Override
     public Response toResponse(Exception exception)
     {

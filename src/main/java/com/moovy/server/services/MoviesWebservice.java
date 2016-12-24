@@ -27,10 +27,13 @@ import javax.ws.rs.core.UriInfo;
 @Path("/movies")
 public class MoviesWebservice
 {
+    /**
+     * The class' logger.
+     */
     protected static Logger logger = Logger.getLogger(MoviesWebservice.class);
 
     /**
-     *
+     * The context's URI info.
      */
     @Context
     UriInfo uriInfo;
@@ -44,7 +47,9 @@ public class MoviesWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getList(@QueryParam("query") String query)
     {
+        // Log the method
         logger.debug("getList(" + query + ")");
+
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 
@@ -74,7 +79,9 @@ public class MoviesWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam("id") int id)
     {
+        // Log the method
         logger.debug("getOne(" + id + ")");
+
         Movie movie = new MovieRepository().fetch(id);
 
         if(movie != null)
@@ -102,7 +109,9 @@ public class MoviesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Movie movie)
     {
+        // Log the method
         logger.debug("add(" + movie + ")");
+
         // Save the new movie
         new MovieRepository().save(movie);
 
@@ -126,7 +135,9 @@ public class MoviesWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Movie movie)
     {
+        // Log the method
         logger.debug("update(" + movie + ")");
+
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 
@@ -155,13 +166,15 @@ public class MoviesWebservice
      *
      * @param id The movie's id.
      * @return A success or failure response.
-     * @see @see <a href="http://stackoverflow.com/questions/18358407">Stack Overflow</a>
+     * @see <a href="http://stackoverflow.com/questions/18358407">Stack Overflow</a>
      */
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") int id)
     {
+        // Log the method
         logger.debug("delete(" + id + ")");
+
         // Initialize vars
         MovieRepository repository = new MovieRepository();
 
@@ -170,9 +183,6 @@ public class MoviesWebservice
 
         if(movie != null)
         {
-            // Clear characters list
-            movie.getCharacters().clear();
-
             // Delete the movie
             repository.delete(movie);
 

@@ -25,10 +25,13 @@ import java.util.List;
 @Path("/characters")
 public class CharactersWebservice
 {
+    /**
+     * The class' loger.
+     */
     protected static Logger logger = Logger.getLogger(CharactersWebservice.class);
 
     /**
-     *
+     * The context's URI info.
      */
     @Context
     UriInfo uriInfo;
@@ -44,7 +47,9 @@ public class CharactersWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByMovie(@PathParam("movieId") int movieId)
     {
+        // Log the method
         logger.debug("getByMovie(" + movieId + ")");
+
         Movie movie = new MovieRepository().fetch(movieId);
 
         if(movie != null)
@@ -73,7 +78,9 @@ public class CharactersWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response save(@PathParam("movieId") int movieId, List<Character> characters)
     {
+        // Log the method
         logger.debug("save(" + movieId + ", " + characters + ")");
+
         // Initialize vars
         MovieRepository repository = new MovieRepository();
         Movie movie = repository.fetch(movieId);

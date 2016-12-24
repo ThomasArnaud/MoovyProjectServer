@@ -14,7 +14,7 @@ import javax.ws.rs.core.*;
 public class ActorsWebservice
 {
     /**
-     *
+     * The context's URI info.
      */
     @Context
     UriInfo uriInfo;
@@ -149,9 +149,6 @@ public class ActorsWebservice
 
         if(actor != null)
         {
-            // Clear characters list
-            actor.getPlayedCharacters().clear();
-
             // Delete the actor
             repository.delete(actor);
 

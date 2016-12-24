@@ -11,8 +11,9 @@ import javax.ws.rs.core.Response;
 public class RepositoryException extends WebApplicationException
 {
     /**
+     * Creates a new repository exception.
      *
-     * @param cause
+     * @param cause The first exception that occurred.
      */
     public RepositoryException(Throwable cause)
     {

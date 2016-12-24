@@ -18,6 +18,9 @@ public class HibernateUtil
      */
     protected static Session session = null;
 
+    /**
+     * Creates a single instance of a Hibernate session.
+     */
     static
     {
         StandardServiceRegistry registry =

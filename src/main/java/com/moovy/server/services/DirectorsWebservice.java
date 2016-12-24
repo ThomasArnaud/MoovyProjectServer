@@ -28,7 +28,7 @@ import javax.ws.rs.core.UriInfo;
 public class DirectorsWebservice
 {
     /**
-     *
+     * The context's URI info.
      */
     @Context
     UriInfo uriInfo;

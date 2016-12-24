@@ -19,12 +19,16 @@ import javax.ws.rs.core.UriInfo;
 @Path("/statistics")
 public class StatisticsWebservice
 {
+    /**
+     * The context's URI info.
+     */
     @Context
     UriInfo uriInfo;
 
     /**
+     * Fetches the dashboard's statistics.
      *
-     * @return Hashmap containing associations between tables and number of entries
+     * @return Map containing associations between tables and number of entries
      */
     @GET
     @Path("/dashboard")

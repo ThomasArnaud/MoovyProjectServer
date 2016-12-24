@@ -6,6 +6,7 @@ import com.moovy.server.utils.HashUtil;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -17,10 +18,14 @@ import java.util.Map;
 @Path("/users")
 public class UsersWebservice
 {
+    /**
+     * The context's URI info.
+     */
     @Context
     UriInfo uriInfo;
 
     /**
+     * Allows an user to log in.
      *
      * @param loginData The user's credentials.
      * @return The user if the credentials are correct, an error otherwise.
@@ -33,6 +38,7 @@ public class UsersWebservice
     {
         // Initialize vars
         UserRepository repository = new UserRepository();
+
 
         // Does the user exist?
         if(!loginData.containsKey("email"))
@@ -65,12 +71,21 @@ public class UsersWebservice
             ;
         }
 
-        System.out.println(loginData);
-
-        if(user.getPassword().equals(HashUtil.sha256("Moovy" + loginData.get("password"))))
+        try
+        {
+            if(user.getPassword().equals(HashUtil.sha256("Moovy" + loginData.get("password"))))
+            {
+                return Response
+                    .ok(user)
+                    .build()
+                ;
+            }
+        }
+        catch(NoSuchAlgorithmException e)
         {
             return Response
-                .ok(user)
+                .serverError()
+                .type(MediaType.APPLICATION_JSON_TYPE)
                 .build()
             ;
         }
@@ -83,9 +98,10 @@ public class UsersWebservice
     }
 
     /**
+     * Allows an user to register.
      *
-     * @param user
-     * @return
+     * @param user The new user to register.
+     * @return A success or failure response.
      */
     @POST
     @Path("/register")
@@ -97,16 +113,27 @@ public class UsersWebservice
 
         if(!repository.exists(user.getEmail()))
         {
-            // Hash password with salt
-            user.setPassword(HashUtil.sha256("Moovy" + user.getPassword()));
+            try
+            {
+                // Hash password with salt
+                user.setPassword(HashUtil.sha256("Moovy" + user.getPassword()));
 
-            // Then, save user
-            repository.save(user);
+                // Then, save user
+                repository.save(user);
 
-            return Response
-                .ok()
-                .build()
-            ;
+                return Response
+                    .ok()
+                    .build()
+                ;
+            }
+            catch(NoSuchAlgorithmException e)
+            {
+                return Response
+                    .serverError()
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .build()
+                ;
+            }
         }
         else
         {

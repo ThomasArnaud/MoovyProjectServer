@@ -15,6 +15,9 @@ import java.util.List;
  */
 public abstract class AbstractRepository<Entity>
 {
+    /**
+     * The class logger.
+     */
     protected static Logger logger = Logger.getLogger(AbstractRepository.class);
     
     /**
@@ -40,7 +43,9 @@ public abstract class AbstractRepository<Entity>
      */
     public boolean exists(int id)
     {
+        // Log method
         logger.debug(this.entityClass.getSimpleName() + ".exists(" + id + ")");
+
         // Initialize vars
         Session session = HibernateUtil.getSession();
         boolean entityExists = false;
@@ -67,7 +72,9 @@ public abstract class AbstractRepository<Entity>
     public Entity fetch(int id)
     throws HibernateException
     {
+        // Log method
         logger.debug(this.entityClass.getSimpleName() + ".fetch(" + id + ")");
+
         try
         {
             return HibernateUtil.getSession().get(this.entityClass, id);
@@ -87,7 +94,9 @@ public abstract class AbstractRepository<Entity>
     public List<Entity> fetchAll()
     throws HibernateException
     {
+        // Log method
         logger.debug(this.entityClass.getSimpleName() + ".fetchAll()");
+
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
@@ -122,7 +131,9 @@ public abstract class AbstractRepository<Entity>
     public void save(Entity entity)
     throws HibernateException
     {
+        // Log method
         logger.debug(this.entityClass.getSimpleName() + ".save(" + entity + ")");
+
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
@@ -154,7 +165,9 @@ public abstract class AbstractRepository<Entity>
     public void delete(Entity entity)
     throws HibernateException
     {
+        // Log method
         logger.debug(this.entityClass.getSimpleName() + ".delete(" + entity + ")");
+
         // Initialize vars
         Session session = HibernateUtil.getSession();
         Transaction transaction = null;
@@ -178,14 +191,18 @@ public abstract class AbstractRepository<Entity>
     }
 
     /**
+     * Detaches an entity from the Hibernate session.
      *
-     * @param entity
-     * @throws HibernateException
+     * @param entity The entity to detach.
+     * @throws HibernateException If an Hibernate error happens.
      */
     public void detach(Entity entity)
     throws HibernateException
     {
+        // Log method
         logger.debug(this.entityClass.getSimpleName() + ".detach(" + entity + ")");
+
+        // Detach entity from the session
         HibernateUtil.getSession().detach(entity);
     }
 }

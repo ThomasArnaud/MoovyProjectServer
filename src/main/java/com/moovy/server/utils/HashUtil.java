@@ -16,27 +16,20 @@ public abstract class HashUtil
      *
      * @param input The input string.
      * @return The hashed string.
+     * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
     public static String sha256(String input)
+    throws NoSuchAlgorithmException
     {
-        try
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        byte[] rawSecurityDigest = sha256.digest(input.getBytes(StandardCharsets.UTF_8));
+        StringBuilder digestBuilder = new StringBuilder();
+
+        for(byte b : rawSecurityDigest)
         {
-            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            byte[] rawSecurityDigest = sha256.digest(input.getBytes(StandardCharsets.UTF_8));
-            StringBuilder digestBuilder = new StringBuilder();
-
-            for(byte b : rawSecurityDigest)
-            {
-                digestBuilder.append(String.format("%02x", b & 0xff));
-            }
-
-            return digestBuilder.toString();
+            digestBuilder.append(String.format("%02x", b & 0xff));
         }
-        catch(NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
 
-            return null;
-        }
+        return digestBuilder.toString();
     }
 }

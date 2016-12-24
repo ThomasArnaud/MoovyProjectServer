@@ -16,6 +16,11 @@ import java.util.Map;
  */
 public class StatisticsRepository
 {
+    /**
+     * Fetches the statistics.
+     *
+     * @return The statistics.
+     */
     public Map<String, Long> getDashboard()
     {
         // Initialize vars
