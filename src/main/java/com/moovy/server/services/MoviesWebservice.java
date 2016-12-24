@@ -155,6 +155,7 @@ public class MoviesWebservice
      *
      * @param id The movie's id.
      * @return A success or failure response.
+     * @see @see <a href="http://stackoverflow.com/questions/18358407">Stack Overflow</a>
      */
     @DELETE
     @Path("/{id}")
@@ -169,6 +170,9 @@ public class MoviesWebservice
 
         if(movie != null)
         {
+            // Clear characters list
+            movie.getCharacters().clear();
+
             // Delete the movie
             repository.delete(movie);
 

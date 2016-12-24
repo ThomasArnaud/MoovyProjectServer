@@ -3,6 +3,7 @@ package com.moovy.server.services;
 import com.moovy.server.model.Character;
 import com.moovy.server.model.Movie;
 import com.moovy.server.repository.MovieRepository;
+import org.apache.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -24,6 +25,8 @@ import java.util.List;
 @Path("/characters")
 public class CharactersWebservice
 {
+    protected static Logger logger = Logger.getLogger(CharactersWebservice.class);
+
     /**
      *
      */
@@ -41,6 +44,7 @@ public class CharactersWebservice
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByMovie(@PathParam("movieId") int movieId)
     {
+        logger.debug("getByMovie(" + movieId + ")");
         Movie movie = new MovieRepository().fetch(movieId);
 
         if(movie != null)
@@ -69,19 +73,24 @@ public class CharactersWebservice
     @Consumes(MediaType.APPLICATION_JSON)
     public Response save(@PathParam("movieId") int movieId, List<Character> characters)
     {
+        logger.debug("save(" + movieId + ", " + characters + ")");
         // Initialize vars
         MovieRepository repository = new MovieRepository();
         Movie movie = repository.fetch(movieId);
 
         if(movie != null)
         {
-            // Attach movie
+            // There is a problem here because of the previous fetch so detach movie from the
+            // Hibernate session so as to avoid unwanted exceptions
+            repository.detach(movie);
+
+            // Attach movie to the character
             for(Character character : characters)
             {
                 character.getId().setMovie(movie);
             }
 
-            // Define characters
+            // Define the movie's characters
             movie.setCharacters(characters);
 
             // Update the movie

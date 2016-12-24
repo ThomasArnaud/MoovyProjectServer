@@ -1,9 +1,6 @@
 package com.moovy.server.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * Character class generated from the database.
@@ -13,6 +10,10 @@ import javax.persistence.Entity;
  * @author Alexis Rabilloud (alexis.rabilloud@etu.univ-lyon1.fr)
  */
 @Entity
+@AssociationOverrides({
+    @AssociationOverride(name = "id.actor", joinColumns = @JoinColumn(name = "id_actor")),
+    @AssociationOverride(name = "id.movie", joinColumns = @JoinColumn(name = "id_movie"))
+})
 public class Character
 {
     private CharacterPK id;

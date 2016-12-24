@@ -1,8 +1,10 @@
 package com.moovy.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public class Category
 {
     private int id;
     private String name;
-    private List<Movie> movies;
+    private List<Movie> movies = new ArrayList<>(0);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,7 +80,12 @@ public class Category
         return result;
     }
 
-    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(
+        name = "movie_category",
+        joinColumns = @JoinColumn(name = "id_category", referencedColumnName = "id", nullable = false),
+        inverseJoinColumns = @JoinColumn(name = "id_movie", referencedColumnName = "id", nullable = false)
+    )
     @JsonIgnore
     public List<Movie> getMovies()
     {

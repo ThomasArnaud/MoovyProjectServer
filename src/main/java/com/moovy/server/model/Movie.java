@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,9 +23,9 @@ public class Movie
     private Date releaseDate;
     private int budget;
     private int benefit;
-    private List<Character> characters;
+    private List<Character> characters = new ArrayList<>(0);
     private Director director;
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>(0);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -153,7 +154,7 @@ public class Movie
         return result;
     }
 
-    @OneToMany(mappedBy = "id.movie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.movie", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     public List<Character> getCharacters()
     {

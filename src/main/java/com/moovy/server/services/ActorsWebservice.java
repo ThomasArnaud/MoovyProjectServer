@@ -135,6 +135,7 @@ public class ActorsWebservice
      *
      * @param id The actor's id.
      * @return A success or failure response.
+     * @see <a href="http://stackoverflow.com/questions/18358407">Stack Overflow</a>
      */
     @DELETE
     @Path("/{id}")
@@ -148,6 +149,9 @@ public class ActorsWebservice
 
         if(actor != null)
         {
+            // Clear characters list
+            actor.getPlayedCharacters().clear();
+
             // Delete the actor
             repository.delete(actor);
 

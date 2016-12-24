@@ -3,6 +3,7 @@ package com.moovy.server.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class Director
     private int id;
     private String lastName;
     private String firstName;
-    private List<Movie> directedMovies;
+    private List<Movie> directedMovies = new ArrayList<>(0);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,7 +97,7 @@ public class Director
         return result;
     }
 
-    @OneToMany(mappedBy = "director", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToMany(mappedBy = "director", cascade = {CascadeType.ALL})
     @JsonIgnore
     public List<Movie> getDirectedMovies()
     {

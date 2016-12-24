@@ -176,4 +176,16 @@ public abstract class AbstractRepository<Entity>
             throw new RepositoryException(ex);
         }
     }
+
+    /**
+     *
+     * @param entity
+     * @throws HibernateException
+     */
+    public void detach(Entity entity)
+    throws HibernateException
+    {
+        logger.debug(this.entityClass.getSimpleName() + ".detach(" + entity + ")");
+        HibernateUtil.getSession().detach(entity);
+    }
 }
